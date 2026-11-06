@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>АгроЯсно — Портал возможностей АПК · Демоверсия</title>
+<meta name="description" content="Демонстрация портала «АгроЯсно»: гранты и субсидии, календарь заявок, база знаний, поставщики, контакты АПК, документы и подбор поддержки.">
+<meta name="theme-color" content="#0c2b3e">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f8fa; --card:#ffffff; --border:#e2e8f0; --border-strong:#d3dce6; --text:#1c2733; --muted:#5a6b7d; --faint:#8a99ab;
+  --primary:#1583d8; --primary-dk:#0f6cb8; --accent:#e8f3fc; --accent-text:#0f6cb8;
+  --ok:#2c9457; --ok-bg:#e6f5ec; --warn:#e07b12; --warn-bg:#fdf0e0; --danger:#d43d3d; --violet:#7c5cd6; --violet-bg:#f0ebfb;
+  --r-sm:8px; --r-md:10px; --r-lg:14px; --r-xl:16px;
+  --shadow-sm:0 1px 2px rgba(28,39,51,.05); --shadow-md:0 4px 16px rgba(21,131,216,.1);
+  --ring:0 0 0 3px var(--accent);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Onest',-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:15px;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+a{color:inherit;text-decoration:none}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ── шапка ── */
+header.site{position:sticky;top:0;z-index:50;background:rgba(246,248,250,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+header.site .wrap{display:flex;align-items:center;gap:16px;height:68px}
+.logo{display:flex;align-items:center;gap:11px;font-weight:700;font-size:17px;flex:none}
+.logo .mark{width:38px;height:38px;border-radius:11px;background:linear-gradient(160deg,#2b97e8,var(--primary));color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;box-shadow:0 2px 8px rgba(21,131,216,.3)}
+.logo small{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.01em}
+nav.main{display:flex;gap:4px;margin-left:10px;flex-wrap:wrap}
+nav.main a{display:inline-flex;align-items:center;height:36px;padding:0 13px;border-radius:999px;font-size:13.5px;font-weight:600;color:#44546a;transition:background .15s,color .15s;white-space:nowrap}
+nav.main a:hover{background:#e9eef4;color:var(--text)}
+nav.main a.on{background:var(--accent);color:var(--accent-text)}
+#mbtn{height:36px}
+
+/* ── кнопки ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--r-md);border:1px solid transparent;background:var(--primary);color:#fff;font-weight:600;font-size:14px;letter-spacing:.005em;cursor:pointer;transition:background .15s,border-color .15s,transform .06s,box-shadow .15s;white-space:nowrap;text-decoration:none;box-shadow:0 1px 3px rgba(15,108,184,.25)}
+.btn:hover{background:var(--primary-dk);box-shadow:0 2px 8px rgba(15,108,184,.3)}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:none;box-shadow:var(--ring)}
+.btn.ghost{background:#fff;color:var(--text);border-color:var(--border-strong);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{border-color:var(--primary);color:var(--accent-text);background:#f7fbfe}
+.btn.big{height:48px;padding:0 26px;font-size:15px;border-radius:12px}
+.btn.sm{height:42px;padding:0 14px;font-size:13.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+
+/* ── поверхности ── */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--shadow-sm)}
+.card{overflow:hidden;background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:20px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;box-shadow:var(--shadow-sm)}
+.card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.cat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;justify-content:center;min-height:64px}
+.cat-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.kpi{background:#f4f8fb;border:1px solid #e8f0f7;border-radius:12px;padding:14px 16px}
+
+/* ── чипы и подписи ── */
+.chip{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 11px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;line-height:1}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.c-ok{color:var(--ok);background:var(--ok-bg)} .c-warn{color:var(--warn);background:var(--warn-bg)}
+.c-info{color:var(--primary);background:var(--accent)} .c-gray{color:var(--muted);background:#eef2f6}
+.c-violet{color:var(--violet);background:var(--violet-bg)}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+.muted{color:var(--muted)}
+.section-title{font-size:22px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+
+/* ── формы ── */
+input.t,select.t{border:1px solid var(--border-strong);border-radius:var(--r-md);height:42px;padding:0 14px;background:#fff;font-size:14px;outline:none;width:100%;transition:border-color .15s,box-shadow .15s;color:var(--text)}
+input.t::placeholder{color:var(--faint)}
+input.t:hover,select.t:hover{border-color:var(--faint)}
+input.t:focus,select.t:focus{border-color:var(--primary);box-shadow:var(--ring)}
+select.t{appearance:none;-webkit-appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%235a6b7d' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+
+/* ── прочее ── */
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>*{min-width:0}
+main{min-height:60vh}
+.view{animation:fade .2s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+footer.site{margin-top:64px;border-top:1px solid var(--border);background:var(--card)}
+footer.site .wrap{padding:40px 20px;display:grid;gap:28px;grid-template-columns:2fr 1fr 1fr 1.4fr}
+footer.site a{display:block;font-size:14px;color:var(--accent-text);padding:4px 0;transition:color .15s}
+footer.site a:hover{color:var(--primary)}
+.notice{background:var(--warn-bg);border:1px solid #f3ddc0;border-radius:var(--r-md);padding:12px 16px;font-size:12.5px;color:#7a4d08;line-height:1.5}
+.badge-demo{display:inline-block;background:#eef2f6;color:var(--muted);border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;letter-spacing:.02em}
+.hgrid{display:grid;gap:24px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)} .hgrid>*{min-width:0}
+@media(max-width:900px){.hgrid{grid-template-columns:minmax(0,1fr)}}
+.prog-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr))}
+.cat-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr))}
+
+/* ── календарь ── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cd{border:1px solid var(--border);border-radius:10px;min-height:94px;padding:7px 8px;font-size:12px;cursor:pointer;background:#fff;overflow:hidden;transition:border-color .15s,box-shadow .15s,transform .15s;display:flex;flex-direction:column}
+.cd:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.cd.sel{outline:2px solid var(--primary);outline-offset:-2px}
+.cd .ev{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:4px;padding:1px 5px;font-size:11px;margin-top:3px;font-weight:500}
+.daynum{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:600}
+.daynum.today{background:var(--primary);color:#fff}
+
+/* ── мастер ── */
+.opt{display:flex;gap:10px;align-items:center;border:1px solid var(--border-strong);border-radius:12px;padding:13px 15px;cursor:pointer;font-size:14px;font-weight:500;transition:border-color .15s,background .15s,box-shadow .15s;background:#fff}
+.opt:hover{border-color:var(--primary);box-shadow:var(--shadow-md)}
+.opt.sel{border-color:var(--primary);background:var(--accent)}
+.opt input{accent-color:var(--primary);width:16px;height:16px}
+.progress{height:6px;border-radius:3px;background:#e8edf2;overflow:hidden}
+.progress>div{height:100%;background:var(--primary);border-radius:3px;transition:width .25s}
+
+/* ── вердикты, таблицы, faq ── */
+.verdict{border-radius:12px;padding:14px 16px;border:1px solid var(--border);background:#fff}
+.v-match{border-color:#bfe3cd;background:#f2faf5}
+.v-clarify{border-color:#f3ddc0;background:#fdf8ef}
+.v-noround{border-color:#c9e0f5;background:#f2f8fd}
+.v-mismatch{background:#fafbfc}
+table.tiers{width:100%;border-collapse:collapse;font-size:14px}
+table.tiers th{text-align:left;padding:12px 14px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--border);white-space:nowrap}
+table.tiers td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+table.tiers tr:last-child td{border-bottom:none}
+table.tiers tbody tr:hover{background:#f7fafc}
+details.panel{overflow:hidden}
+details.panel summary{display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .15s;position:relative}
+details.panel summary:hover{background:#f7fafc}
+details.panel summary::after{content:'+';font-size:20px;font-weight:400;color:var(--faint);flex:none;transition:transform .2s}
+details.panel[open] summary::after{transform:rotate(45deg)}
+
+@media(max-width:900px){nav.main{display:none} #mbtn{display:block !important} #cta{display:none}}
+#mnav a{display:block;padding:12px 4px;font-size:15px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border)}
+#mnav a:last-child{border-bottom:none}
+@media(max-width:700px){footer.site .wrap{grid-template-columns:1fr 1fr}}
+@media(max-width:460px){footer.site .wrap{grid-template-columns:1fr}}
+.wrap{min-width:0}
+
+/* ── плавные появления ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.prog-grid>.card,.cat-grid>.cat-card{animation:fadeUp .35s ease both}
+.prog-grid>.card:nth-child(2),.cat-grid>.cat-card:nth-child(2){animation-delay:.04s}
+.prog-grid>.card:nth-child(3),.cat-grid>.cat-card:nth-child(3){animation-delay:.08s}
+.prog-grid>.card:nth-child(4),.cat-grid>.cat-card:nth-child(4){animation-delay:.12s}
+.prog-grid>.card:nth-child(n+5),.cat-grid>.cat-card:nth-child(n+5){animation-delay:.16s}
+details.panel{animation:fadeUp .3s ease both}
+
+/* ── бейдж «скоро» в меню ── */
+.navbadge{margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--warn-bg);color:var(--warn);border-radius:5px;padding:2.5px 6px;line-height:1;flex:none}
+
+/* ── баннер «в разработке» ── */
+.dev-banner{position:relative;overflow:hidden;border-radius:var(--r-xl);padding:28px 30px;color:#fff;background:linear-gradient(120deg,#0f6cb8,#2b97e8 55%,#63b6f0);box-shadow:0 10px 30px rgba(21,131,216,.28)}
+.dev-banner::after{content:'';position:absolute;right:-60px;top:-70px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.13)}
+.dev-banner::before{content:'';position:absolute;right:90px;bottom:-100px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.09)}
+.dev-tag{position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.dev-tag .pulse{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.dev-banner.green{background:linear-gradient(120deg,#1e7a47,#2c9457 55%,#5cb87f)}
+
+/* ── формы: textarea ── */
+textarea.t{border:1px solid var(--border-strong);border-radius:var(--r-md);padding:10px 14px;background:#fff;font-size:14px;outline:none;width:100%;transition:border-color .15s,box-shadow .15s;color:var(--text);resize:vertical;min-height:84px;line-height:1.55;font-family:inherit}
+textarea.t:hover{border-color:var(--faint)}
+textarea.t:focus{border-color:var(--primary);box-shadow:var(--ring)}
+.f-label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 6px}
+
+/* ── календарь: выходные и компактные события ── */
+.cd.we{background:#f7fafc}
+.cd.we .daynum{color:var(--faint)}
+
+
+/* ────────────────────────────────────────────────────────────
+   АГРОЯСНО · визуальная версия v1 (06.11.2026)
+   Сдержанная редакционная система: графит, тёмный лес, золото
+   ──────────────────────────────────────────────────────────── */
+:root{
+ --bg:#f6f8f6;--card:#fff;--border:#e3e9e5;--border-strong:#d5ded8;
+ --text:#142a39;--muted:#637581;--faint:#89979e;
+ --primary:#12563d;--primary-dk:#0e4230;--accent:#eaf3ed;--accent-text:#13543e;
+ --ok:#16754d;--ok-bg:#e9f5ee;--warn:#ac7a1d;--warn-bg:#fff6e4;
+ --danger:#b8463d;--violet:#755f9e;--violet-bg:#f0edf6;
+ --r-sm:10px;--r-md:12px;--r-lg:17px;--r-xl:20px;
+ --shadow-sm:0 3px 16px rgba(18,43,39,.03);
+ --shadow-md:0 18px 42px rgba(18,61,45,.09);
+ --ring:0 0 0 3px rgba(34,111,73,.16);
+ --gold:#c79633; --navy:#0c2b3e;
+}
+html{scroll-behavior:smooth;scroll-padding-top:140px}
+body{background:radial-gradient(circle at 88% 8%,rgba(201,167,86,.08),transparent 23%),var(--bg);font-size:15px;line-height:1.58}
+::selection{background:#cfe6db;color:var(--navy)}
+a,button{ -webkit-tap-highlight-color:transparent }
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(23,124,81,.25);outline-offset:3px}
+.wrap{max-width:1330px;padding:0 26px}
+.topbar{background:var(--navy);color:#dfebea;font-size:10px;letter-spacing:.14em;font-weight:600}
+.topbar-inner{display:flex;min-height:31px;align-items:center;justify-content:space-between;gap:12px}
+.topbar-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:7px}
+.topbar-right{font-size:9px;color:#b3c5ca;white-space:nowrap}
+header.site{background:rgba(255,255,255,.96);border-bottom:1px solid #e5ece6;box-shadow:0 4px 20px rgba(13,40,37,.025)}
+header.site .wrap{height:82px;gap:18px}
+.logo{gap:11px;min-width:217px}
+.brand-mark{width:48px;height:47px;object-fit:contain;flex:none}
+.brand-name{display:block;white-space:nowrap;font-family:Georgia,'Times New Roman',serif;font-size:27px;font-weight:700;letter-spacing:-.06em;line-height:1.06;color:var(--navy)}
+.brand-name>span{color:var(--primary)}
+.logo small{font-size:10px;font-weight:600;letter-spacing:.07em;color:#84938d;text-transform:uppercase;margin-top:5px}
+nav.main{margin-left:auto;gap:0;align-items:center;flex-wrap:nowrap;min-width:0}
+nav.main a{padding:0 10px;color:#4d5e64;font-weight:600;font-size:12.5px;border-radius:10px;height:38px}
+nav.main a:hover{background:#f1f6f2;color:var(--primary)}
+nav.main a.on{background:#e8f2ec;color:var(--primary)}
+.header-cta{margin-left:2px;flex:none}
+.header-cta .btn{height:39px;padding:0 15px;border-radius:11px}
+.menu-btn{display:none;border:1px solid var(--border-strong);padding:8px 11px;border-radius:12px;background:#fff;color:var(--navy);font-size:17px;gap:6px;align-items:center;cursor:pointer}
+.menu-btn span{font-size:13px;font-weight:600}
+.mobile-navigation{display:none;background:#fff;border-top:1px solid var(--border)}
+.mobile-navigation.mobile-open{display:block}
+.mobile-navigation-links{padding-top:12px;padding-bottom:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mobile-navigation a{border-radius:12px;padding:12px;background:#f5f8f6;color:var(--navy);font-size:13px;font-weight:600}
+.demo-note{background:#fcf8ef;border-bottom:1px solid #f0e8d8}
+.demo-note-inner{display:flex;gap:13px;align-items:center;min-height:42px;padding-top:7px;padding-bottom:7px}
+.demo-note-tag{display:inline-flex;background:#d7a747;color:#32240c;font-size:10px;letter-spacing:.1em;border-radius:6px;padding:3px 8px;font-weight:800}
+.demo-note p{font-size:12px;color:#756347;line-height:1.45}
+main .wrap.view{padding-top:31px}
+.section-title{font-family:Georgia,'Times New Roman',serif;color:var(--navy);font-weight:700;letter-spacing:-.035em;font-size:25px}
+.panel{box-shadow:var(--shadow-sm)}
+.card,.cat-card,.panel{border-color:var(--border);border-radius:var(--r-xl)}
+.card{padding:23px;transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s,border-color .28s;box-shadow:var(--shadow-sm)}
+.card:hover{transform:translateY(-4px);border-color:#b8d2c0;box-shadow:var(--shadow-md)}
+.cat-card{min-height:72px;padding:17px;transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s,border-color .28s}
+.cat-card:hover{transform:translateY(-4px);border-color:#b8d2c0;box-shadow:var(--shadow-md)}
+.btn{border-radius:12px;background:var(--primary);box-shadow:0 4px 14px rgba(19,88,62,.14);transition:transform .22s,background .22s,box-shadow .22s}
+.btn:hover{background:var(--primary-dk);box-shadow:0 10px 26px rgba(18,86,61,.2);transform:translateY(-1px)}
+.btn.ghost:hover{border-color:#b2cdbb;background:#f5f9f5;color:var(--primary)}
+.chip.c-info{background:#e8f2ed;color:var(--primary)}
+.chip.c-gray{background:#f1f3f1;color:#697772}
+.kpi{background:#f5f8f5;border:1px solid #e5ede7}
+.view{animation:pageIn .36s cubic-bezier(.19,1,.22,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.home-hero{position:relative;overflow:hidden;isolation:isolate;min-height:340px;border-color:#e5ebdd;box-shadow:0 18px 65px rgba(22,64,45,.055)!important}
+.home-hero:before{content:'';position:absolute;z-index:-1;width:440px;height:440px;border:1px solid rgba(191,148,55,.17);border-radius:50%;right:-210px;top:-205px;box-shadow:0 0 0 38px rgba(191,148,55,.04),0 0 0 80px rgba(191,148,55,.025)}
+.home-hero:after{content:'';position:absolute;z-index:-1;width:390px;height:260px;border-radius:100% 0 0 0;transform:rotate(-17deg);left:-195px;bottom:-215px;background:linear-gradient(90deg,rgba(21,88,52,.14),rgba(19,93,55,.02))}
+.home-hero>div:nth-child(2){font-family:Georgia,'Times New Roman',serif!important;font-weight:700!important;font-size:clamp(33px,3.7vw,54px)!important;letter-spacing:-.038em!important;line-height:1.13!important;color:var(--navy);max-width:800px!important;margin:9px auto 17px!important}
+.headline-accent{color:var(--primary);white-space:normal}
+.hero-eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;color:#966e26;font-weight:800;font-size:11px;letter-spacing:.15em;text-transform:uppercase}
+.eyebrow-line{width:24px;height:1px;background:var(--gold)}
+.home-hero>div:nth-child(3){max-width:640px!important;font-size:16px!important;line-height:1.7;color:#68766f}
+.home-hero .t{border:1px solid #dae5db;background:#fff;box-shadow:0 5px 15px rgba(15,45,30,.025)}
+.home-hero .btn.big{min-height:48px}
+.home-hero .num{font-weight:800!important}
+.feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:48px}
+.feature-tile{display:flex;align-items:center;gap:13px;padding:17px 17px;background:#fff;border:1px solid var(--border);border-radius:16px;transition:transform .25s,box-shadow .25s,border-color .25s;min-width:0;box-shadow:var(--shadow-sm)}
+.feature-tile:hover{transform:translateY(-3px);border-color:#b3cbb8;box-shadow:var(--shadow-md)}
+.feature-icon{font-family:Georgia,serif;display:flex;width:45px;height:45px;border-radius:14px;background:linear-gradient(150deg,#eff5ee,#e3eee5);align-items:center;justify-content:center;color:var(--primary);font-size:25px;flex:none}
+.feature-tile>span:nth-child(2){font-size:13.5px;font-weight:750;color:var(--navy);line-height:1.35;flex:1;min-width:0}
+.feature-tile small{display:block;margin-top:4px;color:#85918e;font-size:11.5px;font-weight:500}
+.feature-tile b{align-self:flex-start;font-size:15px;font-weight:500;color:#aab8ae;transition:transform .25s,color .25s}
+.feature-tile:hover b{transform:translate(2px,-2px);color:var(--primary)}
+.cat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+footer.site{background:#fff;border-color:var(--border);margin-top:72px}
+footer.site .wrap{max-width:1330px;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:34px;padding-top:45px;padding-bottom:48px}
+footer.site a:not(.logo){color:var(--primary);font-size:13px}
+footer.site a:hover{color:#ac7b22}
+.page-heading{padding:16px 0 24px}
+.page-heading .hero-eyebrow{justify-content:flex-start}
+.page-heading h1{font-family:Georgia,serif;font-weight:700;font-size:38px;letter-spacing:-.04em;margin:12px 0 9px;color:var(--navy)}
+.page-heading p{color:var(--muted);max-width:720px;font-size:15px;line-height:1.7}
+@media(max-width:1280px){.wrap{padding:0 20px}nav.main a{padding:0 7px;font-size:12px}.logo{min-width:196px}.brand-name{font-size:25px}}
+@media(max-width:1110px){nav.main{display:none}.menu-btn{display:inline-flex;margin-left:auto}.header-cta{margin-left:0}header.site .wrap{height:74px}}
+@media(max-width:900px){.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar-right{display:none}footer.site .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}#mbtn{display:inline-flex!important}}
+@media(max-width:620px){.wrap{padding:0 15px}.topbar{font-size:9px;letter-spacing:.07em}.logo{min-width:0}.brand-name{font-size:24px}.logo small{font-size:8.5px}.brand-mark{width:40px;height:40px}.header-cta{display:none}.demo-note-inner{gap:8px}.demo-note p{font-size:11px}.home-hero{padding:34px 17px 32px!important;min-height:0}.home-hero>div:nth-child(2){font-size:34px!important}.home-hero>div:nth-child(3){font-size:14px!important}.home-hero>div:nth-child(4){flex-direction:column!important}.home-hero>div:nth-child(4) .t{width:100%!important}.home-hero>div:nth-child(4) .btn{width:100%;white-space:normal}.home-hero .row{gap:9px!important}.hero-eyebrow{font-size:9px;letter-spacing:.08em}.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.feature-tile{padding:13px;gap:9px;align-items:flex-start}.feature-icon{width:35px;height:35px;border-radius:10px;font-size:21px}.feature-tile>span:nth-child(2){font-size:12.3px}.feature-tile small{font-size:10px}.feature-tile b{display:none}.section-title{font-size:23px}.mobile-navigation-links{grid-template-columns:1fr 1fr}.card{padding:17px}.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cat-card{min-height:70px;padding:12px 13px}footer.site .wrap{grid-template-columns:1fr 1fr;gap:24px}footer.site .wrap>div:first-child,footer.site .wrap>div:last-child{grid-column:span 2}.page-heading h1{font-size:31px}}
+@media(max-width:380px){.brand-name{font-size:21px}.brand-mark{width:34px}.feature-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.view,.card,.cat-card,.feature-tile{animation:none!important;transition:none!important;transform:none!important}}
+
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap topbar-inner"><span><span class="topbar-dot"></span> АГРОЯСНО · ЕДИНАЯ ТОЧКА ДОСТУПА К ВОЗМОЖНОСТЯМ АПК</span><span class="topbar-right">ПРОЕКТНАЯ ВЕРСИЯ · НОЯБРЬ 2026</span></div></div>
+<header class="site"><div class="wrap">
+  <a class="logo" href="#/" aria-label="АгроЯсно — главная">
+    <img class="brand-mark" src="assets/logo-mark.webp" width="48" height="44" alt="">
+    <span class="brand-copy"><span class="brand-name">Агро<span>Ясно</span></span><small>Портал возможностей АПК</small></span>
+  </a>
+  <nav class="main" id="nav" aria-label="Основное меню">
+    <a href="#/" data-r="home">Главная</a>
+    <a href="#/catalog" data-r="catalog">Гранты и субсидии</a>
+    <a href="#/calendar" data-r="calendar">Календарь</a>
+    <a href="#/knowledge" data-r="knowledge">База знаний</a>
+    <a href="#/suppliers" data-r="suppliers">Поставщики</a>
+    <a href="#/contacts" data-r="contacts">Контакты АПК</a>
+    <a href="#/documents" data-r="documents">Документы</a>
+  </nav>
+  <div id="cta" class="header-cta"><a class="btn sm" href="#/podbor">Подобрать <span aria-hidden="true">↗</span></a></div>
+  <button class="menu-btn" id="mbtn" aria-label="Открыть меню" aria-expanded="false" onclick="var m=document.getElementById('mnav');var open=m.classList.toggle('mobile-open');this.setAttribute('aria-expanded',open?'true':'false')">☰ <span>Меню</span></button>
+</div>
+<div id="mnav" class="mobile-navigation"><div class="wrap mobile-navigation-links" onclick="document.getElementById('mnav').classList.remove('mobile-open');document.getElementById('mbtn').setAttribute('aria-expanded','false')">
+  <a href="#/">Главная</a><a href="#/catalog">Гранты и субсидии</a><a href="#/calendar">Календарь заявок</a><a href="#/podbor">Подобрать поддержку</a><a href="#/knowledge">База знаний</a><a href="#/suppliers">Каталог поставщиков</a><a href="#/contacts">Контакты АПК</a><a href="#/documents">Документы и шаблоны</a><a href="#/admin">Админка (демо)</a>
+</div></div></header>
+<div class="demo-note"><div class="wrap demo-note-inner"><span class="demo-note-tag">ДЕМО</span><p>Это визуальная версия портала. Данные о программах, сроках и суммах <strong>примерные, не подтверждены и не предназначены для подачи заявок</strong>.</p></div></div>
+<main><div class="wrap view" id="view" style="padding-top:28px"></div></main>
+<footer class="site"><div class="wrap">
+  <div>
+    <a class="logo" href="#/"><img class="brand-mark" src="assets/logo-mark.webp" width="48" height="44" alt=""><span class="brand-copy"><span class="brand-name">Агро<span>Ясно</span></span><small>Портал возможностей АПК</small></span></a>
+    <p class="muted" style="font-size:14px;margin-top:12px;max-width:280px">Информационно-аналитическая платформа поиска грантов, субсидий и мер государственной поддержки сельского хозяйства России.</p>
+  </div>
+  <div><p class="lbl" style="margin-bottom:10px">Каталог</p><a href="#/catalog">Все меры поддержки</a><a href="#/catalog?type=grant">Гранты для КФХ</a><a href="#/catalog?type=subsidy">Субсидии</a><a href="#/calendar">Агрокалендарь</a></div>
+  <div><p class="lbl" style="margin-bottom:10px">Сервис</p><a href="#/podbor">Подбор господдержки</a><a href="#/suppliers">Витрина поставщиков</a><a href="#/knowledge">База знаний АПК</a><a href="#/contacts">Контакты АПК</a><a href="#/documents">Документы и шаблоны</a><a href="#/tarify">Тарифы</a><a href="#/faq">Вопросы и ответы</a><a href="#/admin">Админ-панель (демо)</a></div>
+  <div><p class="lbl" style="margin-bottom:10px">Важно</p>
+    <p class="muted" style="font-size:12.5px">Пока это прототип интерфейса. Все сведения о грантах, датах, условиях и ведомствах приведены как примеры и нуждаются в проверке на официальных сайтах.</p>
+    <p style="margin-top:10px"><span class="badge-demo">Демонстрационное наполнение MVP</span></p>
+  </div>
+</div></footer>
+<script>
+const D = {"programs": [{"slug": "kompensaciya-zakladka-sadov", "title": "Возмещение затрат на закладку садов и ягодников", "short": "Возмещение значительной части затрат на саженцы и закладку сада или ягодника. Отборы проводят регионы; высокий процент компенсации.", "type": "refund", "level": "federal", "region": null, "cats": ["sady-yagody-vinograd", "sozdanie-sadov"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "Возмещение доли подтверждённых затрат (процент зависит от региона и культуры)", "status": "open", "deadline": "14 ноября 2026 г.", "hist": false, "organizer": "Минсельхоз России; региональные органы управления АПК", "about": "Регионы возмещают значительную долю подтверждённых затрат на покупку саженцев и закладку многолетних насаждений — садов, ягодников и виноградников. Процент возмещения и перечень культур каждый регион утверждает своим постановлением.", "verified": "5 октября 2026 г.", "rounds": [{"title": "Отбор на возмещение затрат на закладку садов", "region": "23", "status": "open", "start": "1 сентября 2026 г.", "end": "14 ноября 2026 г.", "budget": "500 млн ₽"}, {"title": "Отбор на возмещение затрат на закладку садов", "region": "26", "status": "soon", "start": "10 февраля 2027 г.", "end": "10 апреля 2027 г.", "budget": null}], "who": ["КФХ, ИП, ООО, АО и сельхозкооперативы", "Хозяйства, заложившие сад в текущем или прошлом году", "Производители, у которых есть документы на саженцы и работы"], "conds": ["Сад заложен не ранее срока, установленного регионом (обычно текущий или прошлый год)", "Саженцы приобретены у легальных поставщиков, есть платёжные документы", "Хозяйство состоит в реестре (ЕГРЮЛ/ЕГРИП), налоговой задолженности нет", "Заявка подаётся до дедлайна регионального отбора"], "docs": [{"name": "Заявление по форме региона", "why": "Форму публикует минсельхоз региона вместе с условиями отбора"}, {"name": "Выписка ЕГРЮЛ / ЕГРИП", "why": "Подтверждает регистрацию хозяйства"}, {"name": "Договоры и платёжные документы на саженцы и работы", "why": "Возмещаются только подтверждённые затраты"}, {"name": "Документы на земельный участок", "why": "Право собственности или аренды на участок под садом"}, {"name": "Акт закладки насаждений", "why": "Оформляется с участием специалиста органа АПК региона"}], "steps": ["Проверьте, что ваш регион проводит отбор в этом году и уточните перечень культур.", "Закажите саженцы у поставщика, сохраните договор и платёжные документы.", "Заложите сад и оформите акт закладки с районным органом управления АПК.", "Соберите пакет документов и подайте заявку в минсельхоз региона до дедлайна.", "Дождитесь проверки и перечисления возмещения на расчётный счёт."], "links": [["Минсельхоз России — меры поддержки", "https://mcx.gov.ru"], ["Правительство России — АПК", "http://government.ru/department/69/events/"]], "changes": [["5 октября 2026", "Уточнён дедлайн приёма заявок в Краснодарском крае"], ["12 сентября 2026", "Программа добавлена в каталог"]]}, {"slug": "nesvyazannaya-podderzhka", "title": "Несвязанная поддержка в растениеводстве", "short": "Субсидия «на гектар» для производителей зерновых, масличных и других культур: государство возмещает часть затрат на полевые работы.", "type": "refund", "level": "federal", "region": null, "cats": ["rastenievodstvo", "zernovye"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "Ставка на 1 га устанавливается регионом (зависит от года и лимитов)", "status": "open", "deadline": "18 ноября 2026 г.", "hist": false, "organizer": "Минсельхоз России; региональные органы управления АПК", "about": "Несвязанная (азотная) поддержка — выплата на гектар посевов сельхозкультур. Не зависит от вида продукции: важна сама площадь и соблюдение агротребований. Одна из самых массовых мер поддержки растениеводства.", "verified": "10 октября 2026 г.", "rounds": [{"title": "Приём заявлений на несвязанную поддержку", "region": "23", "status": "open", "start": "10 сентября 2026 г.", "end": "25 ноября 2026 г.", "budget": null}, {"title": "Приём заявлений на несвязанную поддержку", "region": "36", "status": "open", "start": "12 сентября 2026 г.", "end": "18 ноября 2026 г.", "budget": null}, {"title": "Приём заявлений на несвязанную поддержку", "region": "26", "status": "closed", "start": "10 мая 2026 г.", "end": "10 июля 2026 г.", "budget": null}], "who": ["КФХ, ИП, ООО — производители растениеводческой продукции", "Хозяйства с землёй в собственности или аренде"], "conds": ["Посевы подтверждены сведениями о площадях", "Земля в собственности или аренде, есть документы", "Отсутствует недоимка по налогам и сборам", "Хозяйство ведёт деятельность в регионе проведения отбора"], "docs": [{"name": "Заявление", "why": "Подаётся в орган АПК региона или через подразделение МФЦ"}, {"name": "Сведения о посевных площадях", "why": "Подтверждают гектары, на которые начисляется поддержка"}, {"name": "Документы на землю", "why": "Свидетельства, договоры аренды"}, {"name": "Справка об отсутствии недоимки", "why": "Проверяется по данным ФНС"}], "steps": ["Уточните ставку на гектар и сроки в вашем регионе.", "Подготовьте сведения о посевах и документы на землю.", "Подайте заявление в отдел сельского хозяйства администрации района.", "Дождитесь сводной проверки и перечисления субсидии."], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["20 октября 2026", "Открыты отборы в Воронежской области и Ставропольском крае"]]}, {"slug": "grant-razvitie-fermerskogo-hozyaystva", "title": "Грант на развитие фермерского хозяйства", "short": "Крупный федеральный грант для создания и развития КФХ. С 2026 года объединяет «Агростартап» и грант семейным фермам: сумма до 30 млн ₽ в зависимости от доли собственных средств.", "type": "grant", "level": "federal", "region": null, "cats": ["fermerskie-hozyaystva", "grant-razvitie-fermerskogo-hozyaystva"], "recip": ["kfh", "ip-kfh"], "amount": "от 5 млн ₽ до 30 млн ₽", "status": "open", "deadline": "20 ноября 2026 г.", "hist": false, "organizer": "Министерство сельского хозяйства РФ; региональные министерства сельского хозяйства", "about": "Флагманский грант Минсельхоза для действующих фермеров: деньги на строительство, оборудование, животных, подключение к сетям. Требует софинансирования от 10% собственными средствами и защиты бизнес-плана перед комиссией.", "verified": "20 октября 2026 г.", "rounds": [{"title": "Отбор на грант на развитие фермерского хозяйства (осенний)", "region": "23", "status": "open", "start": "15 сентября 2026 г.", "end": "28 ноября 2026 г.", "budget": "420 млн ₽"}, {"title": "Отбор на грант на развитие фермерского хозяйства", "region": "16", "status": "open", "start": "1 сентября 2026 г.", "end": "20 ноября 2026 г.", "budget": "300 млн ₽"}, {"title": "Отбор на грант на развитие фермерского хозяйства", "region": "47", "status": "open", "start": "10 октября 2026 г.", "end": "15 декабря 2026 г.", "budget": "120 млн ₽"}, {"title": "Отбор на грант на развитие фермерского хозяйства", "region": "50", "status": "open", "start": "5 октября 2026 г.", "end": "1 декабря 2026 г.", "budget": "200 млн ₽"}, {"title": "Отбор на грант на развитие фермерского хозяйства", "region": "52", "status": "closed", "start": "15 июня 2026 г.", "end": "15 августа 2026 г.", "budget": "90 млн ₽"}, {"title": "Отбор на грант на развитие фермерского хозяйства", "region": "70", "status": "soon", "start": "15 января 2027 г.", "end": "15 марта 2027 г.", "budget": "60 млн ₽"}, {"title": "Отбор на грант на развитие фермерского хозяйства", "region": "36", "status": "open", "start": "20 октября 2026 г.", "end": "10 декабря 2026 г.", "budget": "150 млн ₽"}], "who": ["Главы КФХ и члены хозяйства", "ИП — главы КФХ", "Постоянная регистрация в сельской местности или готовность к переезду"], "conds": ["КФХ зарегистрировано и работает не менее 6 месяцев", "Собственные средства — не менее 10% стоимости проекта", "Постоянная регистрация в сельской местности", "Глава КФХ прошёл обучение (школа фермера или аналог)", "Нет неисполненных обязательств по ранее полученным грантам"], "links": [["Минсельхоз России — поддержка фермеров", "https://mcx.gov.ru/ministry/departments/departament-razvitiya-selskikh-territoriy/activity/state-support-measures/"]], "changes": [["1 ноября 2026", "Краснодарский край продлил приём заявок до 27 ноября"], ["10 октября 2026", "Обновлён перечень направлений расходования гранта"]], "docs": [{"name": "Заявление на участие в отборе", "why": "Основной документ, запускающий рассмотрение заявки"}, {"name": "Бизнес-план развития хозяйства", "why": "Комиссия оценивает реалистичность проекта и показатели"}, {"name": "Справка об отсутствии задолженности по налогам", "why": "Подтверждает отсутствие налоговой задолженности"}, {"name": "Выписка из ЕГРЮЛ / ЕГРИП", "why": "Подтверждает регистрацию и статус хозяйства"}, {"name": "Документы на землю (свидетельство / договор аренды)", "why": "Подтверждает земельное обеспечение проекта"}, {"name": "Подтверждение собственных средств", "why": "Доказывает наличие софинансирования"}, {"name": "Копия паспорта главы КФХ", "why": "Идентификация заявителя"}, {"name": "Согласие на обработку персональных данных", "why": "Юридическое основание обработки данных заявителя"}], "steps": ["Подготовьте бизнес-план и подтвердите собственные средства (от 10% стоимости проекта).", "Зарегистрируйте КФХ и внесите хозяйство в реестр, пройдите обучение.", "Подайте заявку через регионального оператора конкурса.", "Защитите проект перед конкурсной комиссией.", "Подпишите договор, получите средства на отдельный счёт.", "Отчитайтесь по целевым показателям в сроки договора."]}, {"slug": "subsidiya-semejnaya-zhivotnovodcheskaya-ferma", "title": "Субсидия «Семейная животноводческая ферма»", "short": "Возмещение до 60% затрат на создание семейной животноводческой фермы: строительство, оборудование, покупка животных. Для семей, ведущих ферму совместно.", "type": "refund", "level": "federal", "region": null, "cats": ["zhivotnovodstvo", "fermerskie-hozyaystva"], "recip": ["kfh", "ip-kfh", "ip"], "amount": "до 34,6 млн ₽ (возмещение до 60% затрат)", "status": "open", "deadline": "27 ноября 2026 г.", "hist": false, "organizer": "Минсельхоз России; региональные министерства сельского хозяйства", "about": "Субсидия на создание семейных животноводческих ферм (СЖФ): возмещается до 60% подтверждённых затрат на строительство и оборудование фермы, приобретение животных. Ключевое условие — ферма семейная: в КФХ состоят родственники, работающие на ферме лично.", "verified": "2 ноября 2026 г.", "rounds": [{"title": "Приём заявок на СЖФ", "region": "23", "status": "open", "start": "1 октября 2026 г.", "end": "27 ноября 2026 г.", "budget": "340 млн ₽"}, {"title": "Приём заявок на СЖФ", "region": "16", "status": "open", "start": "15 октября 2026 г.", "end": "27 ноября 2026 г.", "budget": "180 млн ₽"}], "who": ["КФХ, где члены — родственники и работают на ферме лично", "Главы КФХ с регистрацией в сельской местности", "Семьи, готовые содержать ферму не менее 10 голов КРС или эквивалент"], "conds": ["Члены КФХ — родственники, лично работающие на ферме", "Возмещаются подтверждённые затраты текущего года", "Софинансирование — не менее 40% собственных или кредитных средств", "Ферма создаётся на срок не менее 5 лет целевого использования"], "docs": [{"name": "Заявление по форме региона", "why": "Публикуется с условиями отбора"}, {"name": "Соглашение о ведении КФХ", "why": "Подтверждает родственные связи членов"}, {"name": "Договоры и платёжные документы по затратам", "why": "Возмещаются только подтверждённые расходы"}, {"name": "Документы на землю и строительство", "why": "Разрешения и правоустанавливающие документы"}, {"name": "Ветеринарные документы на животных", "why": "При приобретении поголовья"}], "steps": ["Проверьте лимит возмещения в вашем регионе (до 60% затрат, максимум 34,6 млн ₽).", "Оформите или актуализируйте соглашение о ведении КФХ с родственными связями.", "Совершите и подтвердите затраты: строительство, оборудование, животные.", "Подайте заявление с документами в минсельхоз региона до 27 ноября.", "Дождитесь проверки и перечисления возмещения."], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["2 ноября 2026", "Максимальная сумма увеличена до 34,6 млн ₽"], ["1 октября 2026", "Открыты отборы в Краснодарском крае и Татарстане"]]}, {"slug": "podderzhka-lph-tatarstan", "title": "Поддержка личных подсобных хозяйств (Республика Татарстан)", "short": "Региональная программа для владельцев ЛПХ: компенсация части затрат на приобретение скота и развитие подворья.", "type": "refund", "level": "regional", "region": "16", "cats": ["fermerskie-hozyaystva", "lph"], "recip": ["lph"], "amount": "Определяется видом и объёмом затрат", "status": "open", "deadline": "27 ноября 2026 г.", "hist": false, "organizer": "Министерство сельского хозяйства и продовольствия Республики Татарстан", "about": "Республиканская программа для личных подсобных хозяйств: субсидии на приобретение скота, техники, строительство хозяйственных объектов. Одна из немногих мер, доступных без регистрации ИП или КФХ.", "verified": "25 сентября 2026 г.", "rounds": [{"title": "Приём заявлений на поддержку ЛПХ", "region": "16", "status": "open", "start": "5 сентября 2026 г.", "end": "27 ноября 2026 г.", "budget": null}], "who": ["Владельцы ЛПХ, постоянно проживающие в Татарстане", "Хозяйства, внесённые в похозяйственные книги"], "conds": ["ЛПХ ведётся не менее года и состоит на учёте в похозяйственной книге", "Постоянная регистрация в сельском поселении РТ", "Подтверждённые затраты по направлениям программы"], "docs": [{"name": "Заявление", "why": "Форма Минсельхоза РТ"}, {"name": "Выписка из похозяйственной книги", "why": "Подтверждает ведение ЛПХ"}, {"name": "Паспорт и СНИЛС", "why": "Личность получателя"}, {"name": "Платёжные документы", "why": "Для возмещаемых направлений"}], "steps": ["Убедитесь, что ЛПХ внесено в похозяйственную книгу сельского поселения.", "Выберите направление поддержки и уточните лимиты.", "Подайте заявление в администрацию района.", "Дождитесь решения и перечисления средств."], "links": [["Минсельхозпрод Республики Татарстан", "https://agro.tatarstan.ru"]], "changes": [["25 октября 2026", "Открыт приём заявок на 2026 год"]]}, {"slug": "agromotivator", "title": "Грант «Агромотиватор»", "short": "Грант сельхозкооперативам на технику, оборудование и пункты заготовки: фермеры объединяются и получают безвозвратное финансирование общей инфраструктуры.", "type": "grant", "level": "federal", "region": null, "cats": ["kooperaciya-i-sbyt", "selhozkooperativy"], "recip": ["coop"], "amount": "до 30 млн ₽", "status": "open", "deadline": "30 ноября 2026 г.", "hist": false, "organizer": "Минсельхоз России", "about": "Грант для действующих фермеров на расширение производства: новые направления, оборудование, увеличение поголовья. Рассчитан на хозяйства с подтверждённой выручкой, которые готовы масштабироваться.", "verified": "18 октября 2026 г.", "rounds": [{"title": "Отбор кооперативов на грант «Агромотиватор»", "region": "26", "status": "open", "start": "20 сентября 2026 г.", "end": "30 ноября 2026 г.", "budget": "180 млн ₽"}, {"title": "Отбор кооперативов на грант «Агромотиватор»", "region": "61", "status": "soon", "start": "1 февраля 2027 г.", "end": "1 апреля 2027 г.", "budget": null}], "who": ["Действующие КФХ и ИП в сельской местности", "Хозяйства с выручкой за прошлый год"], "conds": ["Хозяйство работает не менее 2 лет", "Есть подтверждённая выручка от сельхоздеятельности", "Софинансирование проекта от 20%", "Глава хозяйства прошёл профильное обучение"], "docs": [{"name": "Заявка и бизнес-план проекта", "why": "Бизнес-план защищается перед комиссией"}, {"name": "Выписка ЕГРИП / ЕГРЮЛ", "why": "Регистрация хозяйства"}, {"name": "Налоговая декларация за прошлый год", "why": "Подтверждает выручку"}, {"name": "Справка об отсутствии недоимки", "why": "Обязательное требование конкурса"}, {"name": "Документы о собственных средствах", "why": "Софинансирование от 20%"}], "steps": ["Сформулируйте проект расширения и рассчитайте бюджет.", "Подготовьте бизнес-план по форме оператора конкурса.", "Подайте заявку до дедлайна.", "Защитите проект перед конкурсной комиссией.", "Подпишите договор и осваивайте средства по плану."], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["28 октября 2026", "Опубликованы условия отбора 2026 года"]]}, {"slug": "subsidiya-proizvodstvo-moloka", "title": "Субсидия на производство товарного молока", "short": "Возмещение части затрат за каждый реализованный килограмм молока. Ставку устанавливает регион; выплаты по итогам реализации.", "type": "refund", "level": "federal", "region": null, "cats": ["zhivotnovodstvo", "molochko"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "Ставка за 1 кг реализованного молока; устанавливается регионом", "status": "open", "deadline": "30 ноября 2026 г.", "hist": false, "organizer": "Минсельхоз России; региональные органы управления АПК", "about": "Субсидия на возмещение части затрат на производство товарного молока — выплата за каждый проданный килограмм. Ставку и перечень получателей устанавливает регион.", "verified": "8 октября 2026 г.", "rounds": [{"title": "Приём заявлений на субсидию за молоко (IV квартал)", "region": "16", "status": "open", "start": "5 октября 2026 г.", "end": "30 ноября 2026 г.", "budget": null}, {"title": "Приём заявлений на субсидию за молоко", "region": "36", "status": "open", "start": "10 октября 2026 г.", "end": "5 декабря 2026 г.", "budget": null}], "who": ["Сельхозпроизводители, продающие сырое молоко", "КФХ, ИП, ООО с собственным молочным стадом"], "conds": ["Молоко реализовано перерабатывающим предприятиям или на экспорт", "Поголовье и объёмы подтверждены ветеринарными и товарными документами", "Хозяйство включено в реестр получателей субсидии региона"], "docs": [{"name": "Заявление", "why": "В орган АПК региона"}, {"name": "Договоры поставки молока", "why": "Подтверждают товарный объём"}, {"name": "Приёмо-сдаточные накладные", "why": "Расчёт выплаты идёт по накладным"}, {"name": "Ветеринарные сопроводительные документы", "why": "Подтверждают безопасность продукции"}], "steps": ["Уточните ставку на килограмм в вашем регионе.", "Заключите договоры поставки с переработчиком.", "Собирайте накладные по каждой поставке.", "Поквартально подавайте заявление с пакетом документов."], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["3 ноября 2026", "Дедлайн IV квартала — 30 ноября"]]}, {"slug": "grant-agroturizm", "title": "Грант на развитие агротуризма", "short": "Софинансирование гостевых домов, дегустационных залов и фермерских маршрутов на базе действующего хозяйства. Отборы — в регионах.", "type": "grant", "level": "federal", "region": null, "cats": ["agroturizm", "fermerskie-hozyaystva"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "coop"], "amount": "до 10 млн ₽", "status": "open", "deadline": "20 декабря 2026 г.", "hist": false, "organizer": "Минсельхоз России; региональные министерства", "about": "Грант на создание или развитие объектов агротуризма: гостевые дома на ферме, экотропы, мастерские, дегустационные залы. Поддерживает проекты, объединяющие сельхозпроизводство и туризм.", "verified": "12 октября 2026 г.", "rounds": [{"title": "Отбор проектов агротуризма", "region": "23", "status": "open", "start": "1 октября 2026 г.", "end": "20 декабря 2026 г.", "budget": "80 млн ₽"}, {"title": "Отбор проектов агротуризма", "region": "47", "status": "closed", "start": "15 апреля 2026 г.", "end": "15 июня 2026 г.", "budget": "30 млн ₽"}], "who": ["КФХ, ИП, ООО в сельской местности", "Действующие агропроизводители с туристическим проектом"], "conds": ["Зарегистрированная сельхоздеятельность", "Проект расположен в сельской местности", "Софинансирование от 15%", "Бизнес-план с расчётом туристического потока"], "docs": [{"name": "Заявка и бизнес-план", "why": "Ключевой документ конкурса"}, {"name": "Выписка ЕГРЮЛ / ЕГРИП", "why": "Регистрация"}, {"name": "Документы на участок или объект", "why": "Право на место реализации проекта"}, {"name": "Смета и коммерческие предложения", "why": "Обоснование бюджета"}], "steps": ["Разработайте концепцию туристического продукта на базе хозяйства.", "Подготовьте бизнес-план и смету.", "Подайте заявку на региональный конкурс.", "Защитите проект и подпишите договор.", "Реализуйте проект и отчитайтесь по показателям."], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["15 октября 2026", "Открыты отборы в двух регионах"]]}, {"slug": "lgotnye-investicionnye-kredity", "title": "Льготные инвестиционные кредиты для АПК", "short": "Инвесткредиты на строительство, модернизацию и переработку по ставке до 5% годовых через уполномоченные банки. Размер — до масштаба проекта.", "type": "loan", "level": "federal", "region": null, "cats": ["lgotnoe-kreditovanie", "pererabotka-i-hranenie"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "Сумма определяется проектом; ставка до 5% годовых", "status": "open", "deadline": "25 декабря 2026 г.", "hist": false, "organizer": "Минсельхоз России, уполномоченные банки", "about": "Инвестиционные кредиты для АПК по ставке до 5% годовых через уполномоченные банки. Государство компенсирует банку часть ставки, заёмщик платит льготный процент. Срок — до 8–15 лет в зависимости от цели.", "verified": "15 октября 2026 г.", "rounds": [{"title": "Приём заявок через уполномоченные банки (постоянный)", "region": null, "status": "open", "start": "15 января 2026 г.", "end": "25 декабря 2026 г.", "budget": null}], "who": ["КФХ, ИП, ООО, АО, сельхозкооперативы", "Производители, переработчики и агропромышленные проекты"], "conds": ["Проект соответствует целям: строительство, модернизация, закупка техники, племенного скота", "Заёмщик платёжеспособен по оценке банка", "Средства используются целевым образом, банк контролирует расходование"], "docs": [{"name": "Заявка в уполномоченный банк", "why": "Кредит выдаёт банк, а не Минсельхоз"}, {"name": "Финансовая отчётность", "why": "Оценка платёжеспособности"}, {"name": "Бизнес-план проекта", "why": "Для инвестиционных целей"}, {"name": "Документы на залог", "why": "По требованиям банка"}], "steps": ["Выберите уполномоченный банк из перечня Минсельхоза.", "Подайте заявку с бизнес-планом и отчётностью.", "Дождитесь решения кредитного комитета банка.", "Подпишите кредитный договор с льготной ставкой.", "Используйте средства целевым образом, банк проверяет."], "links": [["Минсельхоз России — льготное кредитование", "https://mcx.gov.ru"], ["Россельхозбанк", "https://www.rshb.ru"]], "changes": [["30 сентября 2026", "Обновлён перечень уполномоченных банков"]]}, {"slug": "agrostartup", "title": "Грант «Агростартап» (историческая программа)", "short": "Грант начинающим фермерам до 5–7 млн ₽. С 2026 года объединён в грант на развитие фермерского хозяйства; новые отборы по «Агростартапу» не проводятся.", "type": "grant", "level": "federal", "region": null, "cats": ["fermerskie-hozyaystva", "sozdanie-kfh"], "recip": ["kfh", "ip-kfh", "individual"], "amount": "от 3 млн ₽ до 7 млн ₽", "status": "archive", "deadline": null, "hist": true, "organizer": "Минсельхоз России", "about": "Историческая программа грантов для начинающих фермеров: на создание фермы «с нуля». С 2024 года заменена грантом «Агростартап» в рамках гранта на развитие фермерского хозяйства. Страница сохранена для истории и статистики.", "verified": "28 декабря 2025 г.", "rounds": [], "who": ["Начинающие фермеры (программа завершена)"], "conds": ["Приём заявок завершён — смотрите актуальный грант «Развитие фермерского хозяйства»"], "docs": [], "steps": [], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["1 января 2024", "Программа завершена, полномочия переданы гранту «Агростартап»"]]}, {"slug": "agroprogress", "title": "Грант «Агропрогресс»", "short": "Поддержка уже работающих КФХ на расширение производства: техника, оборудование, модернизация. Для хозяйств с подтверждённым опытом.", "type": "grant", "level": "federal", "region": null, "cats": ["fermerskie-hozyaystva", "razvitie-kfh"], "recip": ["kfh", "ip-kfh"], "amount": "до 30 млн ₽", "status": "closed", "deadline": null, "hist": false, "organizer": "Минсельхоз России", "about": "Грант на повышение эффективности действующих хозяйств: цифровизация, доение, хранение. Отбор 2026 года завершён, следующее окно ожидается в 2027 году.", "verified": "18 октября 2026 г.", "rounds": [], "who": ["Действующие КФХ и сельхозкооперативы"], "conds": ["Приём завершён — дождитесь объявления нового окна"], "docs": [], "steps": [], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["1 октября 2026", "Отбор 2026 года завершён"]]}, {"slug": "kompensaciya-otechestvennaya-tekhnika", "title": "Компенсация части затрат на отечественную сельхозтехнику", "short": "Скидка 10–25% на новую российскую технику: производитель компенсирует часть цены, а вы платите меньше при покупке трактора, комбайна или посевного комплекса.", "type": "subsidy", "level": "federal", "region": null, "cats": ["tekhnika-i-oborudovanie", "traktory"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "Скидка 10–25% от цены техники (зависит от типа машины)", "status": "closed", "deadline": null, "hist": false, "organizer": "Минпромторг России; производители техники", "about": "Производители техники компенсируют покупателю часть стоимости через скидку на отечественные машины. Для покупателя это выглядит как скидка 15–25% у дилера. Текущий этап распределения завершён.", "verified": "10 октября 2026 г.", "rounds": [], "who": ["Сельхозпроизводители, покупающие новую отечественную технику"], "conds": ["Этап 2026 года завершён — следите за новым распределением лимитов"], "docs": [], "steps": [], "links": [["Минпромторг России", "https://minpromtorg.gov.ru"]], "changes": [["15 сентября 2026", "Лимиты 2026 года распределены"]]}, {"slug": "subsidiya-melioraciya", "title": "Субсидия на мелиорацию земель", "short": "Возмещение части затрат на строительство и реконструкцию систем орошения и осушения, культуртехнические работы.", "type": "refund", "level": "federal", "region": null, "cats": ["zemlya-melioraciya-infrastruktura", "melioraciya"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "Возмещение доли подтверждённых затрат", "status": "closed", "deadline": null, "hist": false, "organizer": "Минсельхоз России", "about": "Субсидия на строительство и реконструкцию мелиоративных систем: орошение, осушение, водообеспечение полей. Приём заявок 2026 года завершён.", "verified": "30 сентября 2026 г.", "rounds": [], "who": ["Сельхозпроизводители с землями, требующими мелиорации"], "conds": ["Приём завершён — новое окно ожидается в 2027 году"], "docs": [], "steps": [], "links": [["Минсельхоз России — мелиорация", "https://mcx.gov.ru"]], "changes": [["1 сентября 2026", "Завершён приём заявок"]]}, {"slug": "agrostrahovanie-subsidiya", "title": "Субсидирование агрострахования", "short": "Государство возмещает до 50% страховой премии по договорам агрострахования посевов и животных.", "type": "insurance", "level": "federal", "region": null, "cats": ["agrostrahovanie", "rastenievodstvo"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "До 50% страховой премии", "status": "closed", "deadline": null, "hist": false, "organizer": "Минсельхоз России", "about": "Государство возмещает до 50% страховой премии по договорам агрострахования посевов, многолетних насаждений и животных. Выплата идёт через страховую компанию: хозяйство платит только свою часть.", "verified": "1 октября 2026 г.", "rounds": [], "who": ["Все сельхозпроизводители, страхующие посевы или поголовье"], "conds": ["Договор заключён с аккредитованной страховой компанией", "Объекты страхования подтверждены документами"], "docs": [{"name": "Заявление в страховую компанию", "why": "Страховая оформляет субсидию сама"}, {"name": "Документы на объекты страхования", "why": "Посевы, насаждения или поголовье"}], "steps": ["Выберите аккредитованную страховую компанию.", "Заключите договор агрострахования с господдержкой.", "Оплатите только свою часть премии (обычно 50%)."], "links": [["Минсельхоз России — агрострахование", "https://mcx.gov.ru"]], "changes": [["10 октября 2026", "Обновлён список аккредитованных страховых"]]}, {"slug": "plemennoe-zhivotnovodstvo", "title": "Субсидии племенному животноводству", "short": "Поддержка племенных хозяйств: возмещение части затрат на содержание племенного поголовья и приобретение генетической продукции.", "type": "refund", "level": "federal", "region": null, "cats": ["zhivotnovodstvo", "plemennoe"], "recip": ["kfh", "ip-kfh", "ooo", "ao", "coop"], "amount": "Ставка на голову племенного животного", "status": "closed", "deadline": null, "hist": false, "organizer": "Минсельхоз России", "about": "Субсидии на приобретение племенного скота и возмещение части затрат на его содержание. Поддерживают улучшение генетики стада. Текущий отбор завершён.", "verified": "28 сентября 2026 г.", "rounds": [], "who": ["Животноводческие хозяйства и племенные заводы"], "conds": ["Приём завершён — следите за открытием нового отбора"], "docs": [], "steps": [], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["20 августа 2026", "Завершено распределение субсидий 2026 года"]]}, {"slug": "lgotnyy-lizing-tekhniki", "title": "Льготный лизинг сельхозтехники и оборудования", "short": "Приобретение техники и оборудования в лизинг на льготных условиях: сниженный аванс и удешевление через государственные программы лизинговых компаний.", "type": "leasing", "level": "federal", "region": null, "cats": ["tekhnika-i-oborudovanie", "lizing"], "recip": ["kfh", "ip-kfh", "ip", "ooo", "ao", "coop"], "amount": "Аванс от 10%; удешевление зависит от программы", "status": "closed", "deadline": null, "hist": false, "organizer": "Государственные лизинговые компании", "about": "Льготный лизинг сельхозтехники и оборудования: уменьшенный аванс и субсидированная ставка через лизинговые компании. Лимиты 2026 года выбраны, ожидается новое финансирование.", "verified": "2 октября 2026 г.", "rounds": [], "who": ["КФХ, ИП, ООО — сельхозпроизводители"], "conds": ["Лимиты 2026 года исчерпаны — заявки временно не принимаются"], "docs": [], "steps": [], "links": [["Минсельхоз России", "https://mcx.gov.ru"]], "changes": [["1 ноября 2026", "Лимиты 2026 года выбраны"]]}], "events": [{"t": "Сибирская аграрная неделя", "type": "exhibition", "region": "54", "d": "2026-11-11", "loc": "Новосибирск, Экспоцентр", "desc": "Выставка АПК Сибири; консультации Минсельхоза Новосибирской области по субсидиям."}, {"t": "Вебинар: как подать заявку на грант на развитие фермерского хозяйства", "type": "webinar", "region": null, "d": "2026-11-12", "loc": "Онлайн", "desc": "Разбор типичных ошибок в заявках и бизнес-планах. Регистрация на сайте оператора.", "slug": "grant-razvitie-fermerskogo-hozyaystva"}, {"t": "Дедлайн: возмещение затрат на закладку садов", "type": "deadline", "region": "23", "d": "2026-11-14", "loc": "Краснодарский край", "desc": "", "slug": "kompensaciya-zakladka-sadov"}, {"t": "Дедлайн: несвязанная поддержка", "type": "deadline", "region": "36", "d": "2026-11-18", "loc": "Воронежская область", "desc": "", "slug": "nesvyazannaya-podderzhka"}, {"t": "Вебинар: агрострахование 2027", "type": "webinar", "region": null, "d": "2026-11-19", "loc": "Онлайн", "desc": "Изменения в субсидировании страховых премий, выбор страховщика.", "slug": "agrostrahovanie-subsidiya"}, {"t": "Дедлайн: грант на развитие фермерского хозяйства", "type": "deadline", "region": "16", "d": "2026-11-20", "loc": "Республика Татарстан", "desc": "", "slug": "grant-razvitie-fermerskogo-hozyaystva"}, {"t": "Выставка «ЮгАгро»", "type": "exhibition", "region": "23", "d": "2026-11-24", "loc": "Краснодар, Экспоград Юг", "desc": "Крупнейшая аграрная выставка Юга России: техника, семена, животноводство. Сессии по господдержке."}, {"t": "Дедлайн: несвязанная поддержка", "type": "deadline", "region": "23", "d": "2026-11-25", "loc": "Краснодарский край", "desc": "", "slug": "nesvyazannaya-podderzhka"}, {"t": "Консультационный день для начинающих фермеров", "type": "webinar", "region": "47", "d": "2026-11-26", "loc": "Санкт-Петербург / онлайн", "desc": "Комитет по АПК Ленобласти: условия отбора на грант, ответы на вопросы.", "slug": "grant-razvitie-fermerskogo-hozyaystva"}, {"t": "Дедлайн: поддержка ЛПХ", "type": "deadline", "region": "16", "d": "2026-11-27", "loc": "Республика Татарстан", "desc": "", "slug": "podderzhka-lph-tatarstan"}, {"t": "Дедлайн: грант на развитие фермерского хозяйства", "type": "deadline", "region": "23", "d": "2026-11-28", "loc": "Краснодарский край", "desc": "Последний день приёма заявок на осенний отбор", "slug": "grant-razvitie-fermerskogo-hozyaystva"}, {"t": "Дедлайн: субсидия за молоко (IV квартал)", "type": "deadline", "region": "16", "d": "2026-11-30", "loc": "Республика Татарстан", "desc": "", "slug": "subsidiya-proizvodstvo-moloka"}, {"t": "Дедлайн: грант «Агромотиватор»", "type": "deadline", "region": "26", "d": "2026-11-30", "loc": "Ставропольский край", "desc": "", "slug": "agromotivator"}], "regions": {"77": "Москва", "50": "Московская область", "47": "Ленинградская область", "78": "Санкт-Петербург", "23": "Краснодарский край", "16": "Республика Татарстан", "52": "Нижегородская область", "70": "Томская область", "36": "Воронежская область", "26": "Ставропольский край", "61": "Ростовская область", "63": "Самарская область", "02": "Республика Башкортостан", "74": "Челябинская область", "54": "Новосибирская область", "42": "Кемеровская область", "56": "Оренбургская область", "22": "Алтайский край", "24": "Красноярский край", "66": "Свердловская область", "34": "Волгоградская область", "76": "Ярославская область", "21": "Чувашская Республика", "64": "Саратовская область", "57": "Орловская область", "62": "Рязанская область", "68": "Тамбовская область", "48": "Липецкая область", "31": "Белгородская область", "46": "Курская область", "44": "Костромская область", "71": "Тульская область", "33": "Владимирская область", "37": "Ивановская область", "32": "Брянская область", "67": "Смоленская область", "69": "Тверская область", "39": "Калининградская область", "60": "Псковская область", "53": "Новгородская область", "35": "Вологодская область", "29": "Архангельская область", "83": "Ненецкий автономный округ", "11": "Республика Коми", "51": "Мурманская область", "10": "Республика Карелия", "05": "Республика Дагестан", "06": "Республика Ингушетия", "20": "Чеченская Республика", "09": "Карачаево-Черкесская Республика", "07": "Кабардино-Балкарская Республика", "15": "Республика Северная Осетия — Алания", "08": "Республика Калмыкия", "01": "Республика Адыгея", "30": "Астраханская область", "58": "Пензенская область", "73": "Ульяновская область", "12": "Республика Марий Эл", "13": "Республика Мордовия", "18": "Удмуртская Республика", "43": "Кировская область", "59": "Пермский край", "14": "Республика Саха (Якутия)", "25": "Приморский край", "27": "Хабаровский край", "28": "Амурская область", "41": "Камчатский край", "49": "Магаданская область", "65": "Сахалинская область", "75": "Забайкальский край", "03": "Республика Бурятия", "79": "Еврейская автономная область", "87": "Чукотский автономный округ", "04": "Республика Алтай", "17": "Республика Тыва", "19": "Республика Хакасия", "38": "Иркутская область", "55": "Омская область", "72": "Тюменская область", "45": "Курганская область", "86": "Ханты-Мансийский автономный округ — Югра", "89": "Ямало-Ненецкий автономный округ"}, "types": {"grant": "Грант", "subsidy": "Безвозвратная субсидия", "refund": "Возмещение понесённых затрат", "prefunding": "Финансирование предстоящих затрат", "loan": "Льготный кредит", "leasing": "Льготный лизинг", "interest": "Компенсация процентов", "insurance": "Страховая поддержка", "guarantee": "Гарантия / поручительство", "other": "Иная форма поддержки"}, "cats": {"fermerskie-hozyaystva": "Фермерские хозяйства", "zhivotnovodstvo": "Животноводство", "rastenievodstvo": "Растениеводство", "sady-yagody-vinograd": "Сады, ягоды и виноград", "tekhnika-i-oborudovanie": "Сельхозтехника и оборудование", "zemlya-melioraciya-infrastruktura": "Земля, мелиорация и инфраструктура", "pererabotka-i-hranenie": "Переработка и хранение", "kooperaciya-i-sbyt": "Кооперация и сбыт", "rybovodstvo": "Рыбоводство и аквакультура", "pchelovodstvo": "Пчеловодство", "agroturizm": "Агротуризм", "organicheskoe-selskoe-hozyaystvo": "Органическое сельское хозяйство", "eksport-apk": "Экспорт продукции АПК", "agrostrahovanie": "Агрострахование", "lgotnoe-kreditovanie": "Льготное кредитование", "kadry-i-obuchenie": "Кадры и обучение"}, "flagDocs": [{"name": "Заявление на участие в отборе", "why": "Основной документ, запускающий рассмотрение заявки"}, {"name": "Бизнес-план развития хозяйства", "why": "Комиссия оценивает реалистичность проекта и показатели"}, {"name": "Справка об отсутствии задолженности по налогам", "why": "Подтверждает отсутствие налоговой задолженности"}, {"name": "Выписка из ЕГРЮЛ / ЕГРИП", "why": "Подтверждает регистрацию и статус хозяйства"}, {"name": "Документы на землю (свидетельство / договор аренды)", "why": "Подтверждает земельное обеспечение проекта"}, {"name": "Подтверждение собственных средств", "why": "Доказывает наличие софинансирования"}, {"name": "Копия паспорта главы КФХ", "why": "Идентификация заявителя"}, {"name": "Согласие на обработку персональных данных", "why": "Юридическое основание обработки данных заявителя"}], "flagTiers": [{"amount": 5000000, "note": "Базовый вариант: старт или точечная модернизация", "ownFundsPct": 10}, {"amount": 8000000, "note": "Расширение поголовья или оборудования", "ownFundsPct": 15}, {"amount": 15000000, "note": "Ферма «под ключ» в молочном или мясном направлении", "ownFundsPct": 20}, {"amount": 30000000, "note": "Крупная семейная ферма с переработкой", "ownFundsPct": 25}], "stats": {"programs": 14, "openRounds": 14, "regions": 6}};
+const TODAY = new Date(2026,10,5);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rname=c=>c?(D.regions[c]||''):'Вся Россия';
+const tname=t=>D.types[t]||t;
+const cname=c=>D.cats[c]||c;
+const LEVEL={federal:'Федеральная',regional:'Региональная',municipal:'Муниципальная'};
+const ST={open:{l:'Приём открыт',c:'c-ok'},soon:{l:'Скоро открытие',c:'c-info'},closed:{l:'Приём завершён',c:'c-gray'},archive:{l:'Историческая',c:'c-gray'}};
+const EV={'deadline':{l:'Дедлайн подачи',c:'c-warn'},'round-open':{l:'Открытие приёма',c:'c-ok'},'round-close':{l:'Завершение приёма',c:'c-warn'},'subsidy-window':{l:'Окно субсидирования',c:'c-info'},'exhibition':{l:'Выставка',c:'c-violet'},'conference':{l:'Конференция / форум',c:'c-violet'},'fair':{l:'Ярмарка',c:'c-violet'},'webinar':{l:'Вебинар / консультация',c:'c-info'}};
+const plural=(n,a,b,c)=>{const m=n%100,d=n%10;if(m>=11&&m<=14)return c;if(d===1)return a;if(d>=2&&d<=4)return b;return c};
+const MN={'января':0,'февраля':1,'марта':2,'апреля':3,'мая':4,'июня':5,'июля':6,'августа':7,'сентября':8,'октября':9,'ноября':10,'декабря':11};
+const ruDays=dt=>{const p=dt.split(' ');return Math.ceil((new Date(+p[2],MN[p[1]],+p[0])-TODAY)/864e5)};
+/* ── контакты ведомств и организаций (телефоны/адреса — только из официальных источников) ── */
+D.contacts=[
+ {name:'Минсельхоз России',kind:'Федеральный орган',site:'mcx.gov.ru',url:'https://mcx.gov.ru',phone:'+7 (495) 607-80-00',email:'info@mcx.ru',addr:'107139, Москва, Орликов пер., 1/11',note:'Федеральные программы: объединённый грант КФХ, «Агротуризм», «Агромотиватор», несвязанная поддержка.',region:null},
+ {name:'Портал мер поддержки АПК',kind:'Федеральный портал',site:'promote.budget.gov.ru',url:'https://promote.budget.gov.ru',phone:null,email:null,addr:null,note:'Электронная подача заявок на федеральные меры; вход через подтверждённую учётную запись «Госуслуг».',region:null},
+ {name:'Россельхозбанк',kind:'Уполномоченный банк',site:'rshb.ru',url:'https://www.rshb.ru',phone:null,email:null,addr:null,note:'Льготные инвестиционные и краткосрочные кредиты АПК, кредиты под грантовые проекты. Актуальные контакты — на сайте банка.',region:null},
+ {name:'МСП Банк',kind:'Уполномоченный банк',site:'mspbank.ru',url:'https://mspbank.ru',phone:null,email:null,addr:null,note:'Льготное кредитование малого и среднего бизнеса, включая сельхозпроизводителей.',region:null},
+ {name:'Корпорация «МСП»',kind:'Инфраструктура',site:'мсп.рф',url:'https://мсп.рф',phone:null,email:null,addr:null,note:'Федеральные меры для малого бизнеса: займы, гарантии, навигатор мер поддержки.',region:null},
+ {name:'Центры «Мой бизнес»',kind:'Инфраструктура',site:'мойбизнес.рф',url:'https://мойбизнес.рф',phone:null,email:null,addr:null,note:'Бесплатные консультации по грантам, помощь с документами; отделения есть в каждом регионе.',region:null},
+ {name:'АККОР — Ассоциация фермерских хозяйств',kind:'Ассоциация',site:'akkor.ru',url:'https://akkor.ru',phone:null,email:null,addr:null,note:'Правовая поддержка фермеров, региональные отделения, разъяснения по мерам поддержки.',region:null},
+ {name:'ФАГПС — Фонд развития АПК',kind:'Фонд',site:'fagps.ru',url:'https://fagps.ru',phone:null,email:null,addr:null,note:'Поддержка сельской кооперации и малых форм хозяйствования.',region:null},
+ {name:'Минсельхоз Краснодарского края',kind:'Региональный орган',site:'msh.krasnodar.ru',url:'https://msh.krasnodar.ru',phone:null,email:null,addr:'Краснодар',note:'Региональные отборы: гранты КФХ, возмещение затрат на сады, сельский туризм.',region:'23'},
+ {name:'Минсельхоз Ставропольского края',kind:'Региональный орган',site:'fppsk26.ru',url:'https://fppsk26.ru/finansovye-mery-podderzhki/minselhoz/',phone:'8 (8652) 35-47-13',email:null,addr:'Ставрополь',note:'Грантовая поддержка: начинающие фермеры, семейные фермы, сельский туризм, кооперативы (телефон отдела грантов).',region:'26'},
+ {name:'Минсельхоз Республики Татарстан',kind:'Региональный орган',site:'pravo.tatarstan.ru',url:'https://pravo.tatarstan.ru/ministries/agro',phone:null,email:null,addr:'Казань',note:'Постановления о грантовой поддержке и субсидиях АПК республики.',region:'16'},
+ {name:'Комитет финансов Ленинградской области',kind:'Региональный орган',site:'budget.lenobl.ru',url:'https://budget.lenobl.ru/budget/business/',phone:null,email:null,addr:'Санкт-Петербург',note:'Субсидии и меры поддержки бизнеса, включая сельхозтоваропроизводителей.',region:'47'},
+ {name:'Минсельхоз Нижегородской области',kind:'Региональный орган',site:'mcx-nnov.ru',url:'https://mcx-nnov.ru/Konkursy_subsidii/',phone:null,email:null,addr:'Нижний Новгород',note:'Конкурсы и субсидии для сельхозтоваропроизводителей области.',region:'52'},
+ {name:'Департамент АПК Томской области',kind:'Региональный орган',site:'depagro.tomsk.gov.ru',url:'https://depagro.tomsk.gov.ru/gosudarstvennaja-podderzhka',phone:null,email:null,addr:'Томск',note:'Государственная поддержка АПК региона.',region:'70'}
+];
+/* ── шаблоны документов для заявителей ── */
+D.templates=[
+ {id:'bp-kfh',name:'Бизнес-план развития КФХ',desc:'Типовая структура: резюме проекта, производственный план, финансовая модель, плановые показатели.',updated:'20 октября 2026 г.',fmt:'DOCX'},
+ {id:'zayavlenie-otbor',name:'Заявление на участие в отборе',desc:'Общая форма заявления; официальные региональные формы публикуют минсельхозы вместе с условиями отбора.',updated:'12 сентября 2026 г.',fmt:'DOCX'},
+ {id:'smeta',name:'Смета проекта',desc:'Перечень затрат с ценами, поставщиками и обоснованием каждой статьи.',updated:'12 сентября 2026 г.',fmt:'XLSX'},
+ {id:'plan-rashodov',name:'План расходования гранта',desc:'Календарный график освоения средств по статьям затрат.',updated:'5 октября 2026 г.',fmt:'XLSX'},
+ {id:'soglasie-pd',name:'Согласие на обработку персональных данных',desc:'Для заявителя и членов КФХ.',updated:'1 сентября 2026 г.',fmt:'DOCX'},
+ {id:'otchet-celevoe',name:'Отчёт о целевом использовании средств',desc:'Форма отчётности после получения гранта с подтверждающими документами.',updated:'5 октября 2026 г.',fmt:'DOCX'}
+];
+/* ── витрина поставщиков (категории, раздел в разработке) ── */
+D.supplierCats=[['Корма и добавки','Комбикорма, премиксы, белково-витаминные добавки'],['Удобрения и СЗР','Минеральные и органические удобрения, средства защиты растений'],['Оборудование','Доильное, кормовое, тепличное оборудование, поилки'],['Техника','Тракторы, комбайны, навесное и прицепное'],['Семена и саженцы','Семена, посадочный материал, питомники'],['Расходники и упаковка','Тара, плёнка, шпагат, маркировка'],['Ветеринария','Ветпрепараты, вакцины, инструменты'],['Строительство','Быстровозводимые фермы, ангары, хранилища']];
+/* ── база знаний АПК (планируемые разделы) ── */
+D.knowledge=[
+ {t:'Обучение и курсы',d:'Школа фермера и курсы бизнес-планирования: по условиям большинства грантов обучение главы КФХ обязательно.'},
+ {t:'Вебинары',d:'Разборы условий отборов, вопросы и ответы с практиками, записи эфиров.'},
+ {t:'Гайды и инструкции',d:'Пошаговые материалы: как подготовить бизнес-план, как проходит комиссия, как отчитываться.'},
+ {t:'Шаблоны документов',d:'Проверенные шаблоны заявлений, смет и бизнес-планов — ведутся в админ-панели, появятся здесь для скачивания.'},
+ {t:'Нормативная база',d:'Постановления и приказы с пояснениями простым языком и ссылками на оригиналы.'},
+ {t:'Словарь АПК',d:'Термины господдержки: несвязанная поддержка, софинансирование, неделимый фонд и другие.'}
+];
+let S={q:'',ft:'',fs:'',cat:'',reg:'',sort:'deadline',favOnly:false,slug:null,day:null,docs:{},w:{step:0,region:'',opf:'',stage:'',goal:''},user:null,fav:[],atab:'obzor',adtab:'programs',mod:[0,1,2],ckind:'',lmode:'login',adprog:'',edc:null,edt:null,regcode:'',regmail:'',regname:''};
+/* локальное сохранение правок администратора (демо-режим) */
+const LS='agroyasno_preview_v1';
+try{const ov=JSON.parse(localStorage.getItem(LS)||'{}');
+  if(ov.programs)D.programs.forEach(p=>{const o=ov.programs[p.slug];if(o)Object.assign(p,o)});
+  if(Array.isArray(ov.contacts))D.contacts=ov.contacts;
+  if(Array.isArray(ov.templates))D.templates=ov.templates;
+}catch(e){}
+function persistAll(){try{const ov={programs:{},contacts:D.contacts,templates:D.templates};D.programs.forEach(p=>ov.programs[p.slug]={title:p.title,short:p.short,amount:p.amount,deadline:p.deadline,about:p.about,who:p.who,conds:p.conds,steps:p.steps,docs:p.docs});localStorage.setItem(LS,JSON.stringify(ov));}catch(e){}}
+function resetEdits(){try{localStorage.removeItem(LS);}catch(e){}location.reload()}
+function gv(id){const el=document.getElementById(id);return el?el.value.trim():''}
+function toggleFav(slug){const i=S.fav.indexOf(slug);if(i>=0)S.fav.splice(i,1);else S.fav.push(slug);refresh();}
+const NOTIFS=[['Сегодня','Открыт приём заявок: грант «Агростартап» в Краснодарском крае','grant-agrostartup'],['Вчера','Приближается дедлайн: «Развитие фермерского хозяйства» — осталось 12 дней','grant-razvitie-fermerskogo-hozyaystva'],['3 дня назад','Изменены условия: «Семейная животноводческая ферма» — обновлён перечень документов','subsidiya-semejnaya-zhivotnovodcheskaya-ferma']];
+const MODERATION=[
+ {prog:'Грант «Развитие фермерского хозяйства»',field:'Дедлайн приёма заявок',before:'20 ноября 2026',after:'27 ноября 2026',src:'mcx.gov.ru',st:'robot'},
+ {prog:'Субсидия «Семейная животноводческая ферма»',field:'Максимальная сумма',before:'до 30,0 млн ₽',after:'до 34,6 млн ₽',src:'krasnodar.ru',st:'robot'},
+ {prog:'Грант «Агростартап»',field:'Перечень документов',before:'7 документов',after:'8 документов (+ справка об обучении)',src:'mcx.gov.ru',st:'manual'}];
+const SOURCES=[['Минсельхоз России','mcx.gov.ru','ok','сегодня, 06:00'],['Департамент сельского хозяйства Краснодарского края','mcx.krasnodar.ru','ok','сегодня, 06:10'],['Минсельхоз Ставропольского края','agro.stavregion.ru','ok','вчера, 22:00'],['Россельхозбанк (льготное кредитование)','rshb.ru','wait','—'],['МСП Банк (Кредит на развитие)','mspbank.ru','err','ошибка структуры страницы — требуется правка правила сбора']];
+const USERS=[['Иван Петров','ivan@example.ru','Краснодарский край','КФХ','Полный доступ'],['Мария Сидорова','maria@example.ru','Ставропольский край','ИП','Бесплатный'],['КФХ «Заря»','zarya@example.ru','Ростовская область','КФХ','Полный доступ']];
+function chip(p){const s=ST[p.status];let extra='';
+  if(p.status==='open'&&p.deadline){const d=ruDays(p.deadline);if(d<=14)extra=`<span class="chip c-warn num">осталось ${d} дн.</span>`;}
+  return `<span class="chip ${s.c}"><span class="dot"></span>${s.l}</span>${extra}`;}
+function card(p){return `<div class="card" onclick="location.hash='#/program/${p.slug}'">
+  <div class="row" style="margin-bottom:10px">${chip(p)}<span class="chip c-gray">${tname(p.type)}</span>${p.hist?'<span class="chip c-gray">Историческая</span>':''}<span style="margin-left:auto;cursor:pointer;font-size:17px;line-height:1;color:${S.fav.includes(p.slug)?'var(--primary)':'var(--muted)'}" title="В избранное" onclick="event.stopPropagation();toggleFav('${p.slug}')">${S.fav.includes(p.slug)?'♥':'♡'}</span></div>
+  <div style="font-size:16px;font-weight:700;margin-bottom:6px;line-height:1.3">${esc(p.title)}</div>
+  <div class="muted" style="font-size:13.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(p.short)}</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:13px">
+    <div><span class="lbl">Размер</span><div class="num" style="font-weight:600;margin-top:2px">${esc(p.amount)}</div></div>
+    <div><span class="lbl">Срок подачи</span><div class="num" style="font-weight:600;margin-top:2px">${p.deadline||'Уточняется'}</div></div>
+    <div><span class="lbl">Регион</span><div style="font-weight:500;margin-top:2px">${p.region?`<a href="#/region/${p.region}" style="color:var(--accent-text)" onclick="event.stopPropagation()">${rname(p.region)}</a>`:'Вся Россия'}</div></div>
+    <div><span class="lbl">Направление</span><div style="font-weight:500;margin-top:2px">${cname(p.cats[0])||'—'}</div></div>
+  </div></div>`;}
+
+function vHome(){
+  const open=D.programs.filter(p=>p.status==='open').slice(0,3);
+  const rounds=[];D.programs.forEach(p=>p.rounds.forEach(r=>{if(r.status==='open'&&r.end)rounds.push({p,r})}));
+  rounds.sort((a,b)=>a.r.end<b.r.end?-1:1);
+  const regSet=new Set(rounds.map(x=>x.r.region).filter(Boolean));
+  const evs=D.events.slice().sort((a,b)=>a.d<b.d?-1:1).slice(0,4);
+  return `
+  <div class="panel home-hero" style="text-align:center;padding:54px 24px 48px;margin-bottom:26px;background:linear-gradient(135deg,#fffef9,#f1f6f3)">
+    <div class="hero-eyebrow"><span class="eyebrow-line"></span> АГРОЯСНО · ПОРТАЛ ВОЗМОЖНОСТЕЙ АПК</div>
+    <div style="font-size:34px;font-weight:800;letter-spacing:-.02em;max-width:640px;margin:0 auto 10px;line-height:1.15">Ваши возможности <span class="headline-accent">начинаются здесь</span></div>
+    <div class="muted" style="font-size:15px;max-width:560px;margin:0 auto 24px">Гранты, субсидии, знания и партнёры для развития сельского хозяйства. Всё важное — в едином понятном пространстве.</div>
+    <div style="display:flex;gap:8px;max-width:560px;margin:0 auto">
+      <input class="t" id="hq" placeholder="Например: сады, молоко, техника, грант КФХ…" style="flex:1;height:48px;border-radius:12px;font-size:15px" onkeydown="if(event.key==='Enter'){S.q=this.value;location.hash='#/catalog'}">
+      <button class="btn big" onclick="S.q=document.getElementById('hq').value;location.hash='#/catalog'">Найти возможности <span aria-hidden="true">→</span></button>
+    </div>
+    <div class="row" style="justify-content:center;margin-top:22px;font-size:14px;gap:24px;flex-wrap:wrap">
+      <a href="#/catalog" style="color:inherit;text-decoration:none"><b class="num" style="color:var(--primary)">${D.programs.filter(p=>!p.hist).length}</b> <span class="muted">${plural(D.programs.filter(p=>!p.hist).length,'программа','программы','программ')} в базе</span></a>
+      <a href="#/catalog" style="color:inherit;text-decoration:none"><b class="num" style="color:var(--ok)">${rounds.length}</b> <span class="muted">примеров отборов</span></a>
+      <a href="#/catalog" style="color:inherit;text-decoration:none"><b class="num">${regSet.size}</b> <span class="muted">регионов в демо</span></a>
+    </div>
+  </div>
+  <div class="feature-grid" aria-label="Разделы портала">
+    <a href="#/catalog" class="feature-tile"><span class="feature-icon">₽</span><span>Гранты и субсидии<small>Поддержка агробизнеса</small></span><b>↗</b></a>
+    <a href="#/calendar" class="feature-tile"><span class="feature-icon">▦</span><span>Календарь заявок<small>Даты и события</small></span><b>↗</b></a>
+    <a href="#/knowledge" class="feature-tile"><span class="feature-icon">▤</span><span>База знаний<small>Практика и обучение</small></span><b>↗</b></a>
+    <a href="#/suppliers" class="feature-tile"><span class="feature-icon">⬡</span><span>Поставщики АПК<small>Каталог компаний</small></span><b>↗</b></a>
+    <a href="#/contacts" class="feature-tile"><span class="feature-icon">✉</span><span>Контакты АПК<small>Ведомства по регионам</small></span><b>↗</b></a>
+    <a href="#/documents" class="feature-tile"><span class="feature-icon">≡</span><span>Документы<small>Формы и шаблоны</small></span><b>↗</b></a>
+  </div>
+  <div class="row" style="justify-content:space-between;margin-bottom:14px"><span class="section-title">Категории господдержки</span><a href="#/catalog" style="color:var(--accent-text);font-size:14px;font-weight:600">Все меры →</a></div>
+  <div class="cat-grid" style="margin-bottom:40px">
+    ${Object.entries(D.cats).map(([sl,n])=>{const c=D.programs.filter(p=>!p.hist&&p.cats.includes(sl)).length;return `<div class="cat-card" onclick="S.cat='${sl}';S.q='';S.ft='';location.hash='#/catalog'"><div style="font-weight:600;font-size:14px">${esc(n)}</div><div class="muted num" style="font-size:12px;margin-top:4px">${c?c+' '+plural(c,'программа','программы','программ'):'уточняется'}</div></div>`}).join('')}
+  </div>
+  <div class="hgrid" style="margin-bottom:40px">
+    <div>
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><span class="section-title">Примеры программ</span><a href="#/catalog" style="color:var(--accent-text);font-size:14px;font-weight:600">Каталог →</a></div>
+      <div style="display:grid;gap:16px">${open.map(card).join('')}</div>
+    </div>
+    <div>
+      <div class="section-title" style="margin-bottom:14px">Примеры отборов</div>
+      <div style="display:grid;gap:10px;margin-bottom:28px">
+        ${rounds.slice(0,5).map(({p,r})=>{const d=ruDays(r.end);return `<div class="card" style="padding:14px 16px;display:flex;gap:14px;align-items:center" onclick="location.hash='#/program/${p.slug}'">
+          <div style="width:48px;height:48px;border-radius:10px;background:var(--warn-bg);color:var(--warn);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0"><span class="num" style="font-size:17px;font-weight:700;line-height:1">${d}</span><span style="font-size:10px;font-weight:500">дней</span></div>
+          <div style="min-width:0"><div style="font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.title)}</div>
+          <div class="muted" style="font-size:12.5px">${rname(r.region)||'Вся Россия'} · до ${r.end}</div></div></div>`}).join('')}
+      </div>
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><span class="section-title" style="font-size:17px">Ближайшие события</span><a href="#/calendar" style="color:var(--accent-text);font-size:14px;font-weight:600">Календарь →</a></div>
+      <div style="display:grid;gap:8px">
+        ${evs.map(e=>`<div class="card" style="padding:12px 14px;display:flex;gap:12px;align-items:center" onclick="location.hash='${e.slug?('#/program/'+e.slug):'#/calendar'}'">
+          <div style="width:52px;height:44px;border-radius:8px;background:#eef2f6;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0">
+            <span class="lbl" style="font-size:10px">нояб.</span><span class="num" style="font-size:16px;font-weight:700;line-height:1">${+e.d.split('-')[2]}</span></div>
+          <div style="min-width:0"><div style="font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(e.t)}</div>
+          <div class="muted" style="font-size:12px"><span class="chip ${EV[e.type].c}" style="font-size:11px;padding:1px 8px">${EV[e.type].l}</span> ${esc(e.loc||rname(e.region)||'')}</div></div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="panel" style="padding:32px;margin-bottom:40px">
+    <div class="section-title" style="margin-bottom:20px">Как работает сервис</div>
+    <div style="display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      ${[['1','Опишите хозяйство','Регион, форма (КФХ, ИП, ООО, ЛПХ), направление и цель — 2 минуты','#/podbor'],['2','Получите честный подбор','Покажем подходящие программы и прямо скажем, где не подходите','#/podbor'],['3','Проверьте документы','Интерактивный чек-лист: что нужно, зачем и где взять','#/catalog'],['4','Следите за сроками','Агрокалендарь: дедлайны, окна отборов, выставки и консультации','#/calendar']].map(x=>`
+      <a href="${x[3]}" style="color:inherit;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:var(--accent);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:10px">${x[0]}</div>
+      <div style="font-weight:700;font-size:15px;margin-bottom:4px">${x[1]}</div><div class="muted" style="font-size:13.5px">${x[2]}</div></a>`).join('')}
+    </div>
+  </div>
+  <div class="row" style="justify-content:center;margin-bottom:20px"><a class="btn ghost big" href="#/faq">Частые вопросы о сервисе →</a></div>`;
+}
+
+function matchQ(p,q){if(!q)return true;
+  const hay=(p.title+' '+p.short+' '+(p.organizer||'')+' '+tname(p.type)+' '+p.cats.map(cname).join(' ')+' '+rname(p.region)).toLowerCase();
+  const hw=hay.split(/[^а-яёa-z0-9]+/i).filter(Boolean);
+  return q.toLowerCase().split(/[\s,]+/).filter(w=>w.length>=2).every(w=>{
+    if(hay.includes(w))return true;
+    return [w.slice(0,-1),w.slice(0,-2)].filter(s=>s.length>=3).some(st=>hw.some(h=>h.startsWith(st)));});}
+function vCatalog(){
+  let list=D.programs.filter(p=>!p.hist);
+  if(S.q)list=list.filter(p=>matchQ(p,S.q));
+  if(S.ft)list=list.filter(p=>p.type===S.ft);
+  if(S.fs)list=list.filter(p=>p.status===S.fs);
+  if(S.cat)list=list.filter(p=>p.cats.includes(S.cat));
+  if(S.reg)list=list.filter(p=>!p.region||p.region===S.reg);
+  if(S.favOnly)list=list.filter(p=>S.fav.includes(p.slug));
+  const dl=p=>{if(!p.deadline)return 9999;const d=ruDays(p.deadline);return isNaN(d)?9999:d};
+  if(S.sort==='deadline')list=list.slice().sort((a,b)=>dl(a)-dl(b));
+  if(S.sort==='name')list=list.slice().sort((a,b)=>a.title.localeCompare(b.title,'ru'));
+  const active=S.q||S.ft||S.fs||S.cat||S.reg||S.favOnly;
+  return `
+  <div class="section-title" style="font-size:28px;margin-bottom:6px">Все меры поддержки</div>
+  <div class="muted" style="font-size:14px;margin-bottom:20px">Гранты, субсидии, льготные кредиты и лизинг — с условиями, сроками и официальными источниками. Фильтры можно комбинировать.</div>
+  <div class="row" style="margin-bottom:12px">
+    <input class="t" placeholder="Поиск: сады, молоко, техника…" value="${esc(S.q)}" style="flex:1;min-width:200px" oninput="S.q=this.value;refresh()">
+    <select class="t" style="width:auto" onchange="S.ft=this.value;refresh()">
+      <option value="">Все виды поддержки</option>
+      ${Object.entries(D.types).map(([v,n])=>`<option value="${v}" ${S.ft===v?'selected':''}>${n}</option>`).join('')}
+    </select>
+    <select class="t" style="width:auto" onchange="S.fs=this.value;refresh()">
+      <option value="">Любой статус</option>
+      <option value="open" ${S.fs==='open'?'selected':''}>Приём открыт</option>
+      <option value="soon" ${S.fs==='soon'?'selected':''}>Скоро открытие</option>
+      <option value="closed" ${S.fs==='closed'?'selected':''}>Приём завершён</option>
+    </select>
+  </div>
+  <div class="row" style="margin-bottom:20px">
+    <select class="t" style="width:auto" onchange="S.cat=this.value;refresh()">
+      <option value="">Все категории</option>
+      ${Object.entries(D.cats).map(([v,n])=>`<option value="${v}" ${S.cat===v?'selected':''}>${n}</option>`).join('')}
+    </select>
+    <select class="t" style="width:auto" onchange="S.reg=this.value;refresh()">
+      <option value="">Все регионы</option>
+      ${Object.entries(D.regions).map(([v,n])=>`<option value="${v}" ${S.reg===v?'selected':''}>${n}</option>`).join('')}
+    </select>
+    <select class="t" style="width:auto" onchange="S.sort=this.value;refresh()">
+      <option value="deadline" ${S.sort==='deadline'?'selected':''}>Сначала ближайший дедлайн</option>
+      <option value="name" ${S.sort==='name'?'selected':''}>По названию</option>
+    </select>
+    <button class="btn ghost" style="padding:8px 14px;${S.favOnly?'border-color:var(--primary);color:var(--accent-text)':''}" onclick="S.favOnly=!S.favOnly;refresh()">♥ Избранное (${S.fav.length})</button>
+    ${active?`<button class="btn ghost" style="padding:8px 14px" onclick="S.q='';S.ft='';S.fs='';S.cat='';S.reg='';S.favOnly=false;refresh()">Сбросить</button>`:''}
+  </div>
+  ${S.reg?`<div class="muted" style="font-size:13px;margin-bottom:12px">Регион: <a href="#/region/${S.reg}" style="color:var(--accent-text);font-weight:600">${rname(S.reg)}</a> — показаны региональные и федеральные меры</div>`:''}
+  <div class="muted" style="font-size:14px;margin-bottom:14px">Найдено: <b class="num" style="color:var(--text)">${list.length}</b></div>
+  <div class="prog-grid">${list.map(card).join('')||'<div class="panel muted" style="padding:32px">По заданным фильтрам ничего не найдено — попробуйте смягчить условия или сбросить фильтры.</div>'}</div>`;
+}
+
+function vDetail(slug){
+  const p=D.programs.find(x=>x.slug===slug);if(!p)return '<div class="panel" style="padding:32px">Программа не найдена</div>';
+  const docs=(p.docs&&p.docs.length)?p.docs:[];
+  const done=docs.filter((d,i)=>S.docs[slug+':'+i]).length;
+  const similar=D.programs.filter(x=>x.slug!==slug&&!x.hist&&x.cats.some(c=>p.cats.includes(c))).slice(0,3);
+  const RECIP={kfh:'КФХ','ip-kfh':'ИП — глава КФХ',ip:'ИП',ooo:'ООО',ao:'АО',coop:'СПоК',lph:'ЛПХ'};
+  return `
+  <div class="muted" style="font-size:13px;margin-bottom:14px"><a href="#/catalog" style="color:var(--accent-text)">Каталог</a> → <a href="#/catalog" onclick="S.cat='${p.cats[0]}'" style="color:var(--accent-text)">${cname(p.cats[0])||'Меры поддержки'}</a> → ${esc(p.title)}</div>
+  <div class="panel" style="padding:28px;margin-bottom:24px">
+    <div class="row" style="margin-bottom:12px">${chip(p)}<span class="chip c-gray">${tname(p.type)}</span><span class="chip c-gray">${LEVEL[p.level]}</span>${p.hist?'<span class="chip c-gray">Историческая</span>':''}<span style="margin-left:auto;cursor:pointer;font-size:20px;line-height:1;color:${S.fav.includes(p.slug)?'var(--primary)':'var(--muted)'}" title="В избранное" onclick="toggleFav('${p.slug}')">${S.fav.includes(p.slug)?'♥':'♡'}</span></div>
+    <div style="font-size:26px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px">${esc(p.title)}</div>
+    <div class="muted" style="font-size:14.5px;max-width:760px;margin-bottom:22px">${esc(p.short)}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px">
+      <div class="kpi"><div class="lbl">Размер поддержки</div><div class="num" style="font-weight:700;font-size:16px;margin-top:4px">${esc(p.amount)}</div></div>
+      <div class="kpi"><div class="lbl">Приём заявок</div><div class="num" style="font-weight:700;font-size:16px;margin-top:4px">${p.deadline?('до '+p.deadline):'Уточняется'}</div></div>
+      <div class="kpi"><div class="lbl">Организатор</div><div style="font-weight:600;font-size:14px;margin-top:4px">${esc(p.organizer||'—')}</div></div>
+      <div class="kpi"><div class="lbl">Данные проверены</div><div class="num" style="font-weight:700;font-size:16px;margin-top:4px">${p.verified||'—'}</div><div style="font-size:11px;color:var(--warn);font-weight:600;margin-top:2px">демо-наполнение</div></div>
+    </div>
+    <div class="row" style="margin-top:20px;flex-wrap:wrap"><a class="btn big" href="#/podbor">Проверить, подхожу ли я</a><a class="btn ghost big" href="${p.links[0]?p.links[0][1]:'#'}" target="_blank" rel="noopener">Официальный источник ↗</a>${p.region?`<a class="btn ghost big" href="#/region/${p.region}">${rname(p.region)}</a>`:''}</div>
+  </div>
+  ${p.rounds.length?`<div class="section-title" style="margin-bottom:12px">Отборы по программе</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-bottom:28px">
+    ${p.rounds.map(r=>{const s=ST[r.status]||ST.closed;return `<div class="panel" style="padding:14px 16px">
+      <div class="row"><span class="chip ${s.c}"><span class="dot"></span>${s.l}</span><b style="font-size:14px">${rname(r.region)||'Вся Россия'}</b></div>
+      <div class="muted num" style="font-size:12.5px;margin-top:8px">${r.start||'?'} — ${r.end||'?'}${r.budget?` · бюджет ${r.budget}`:''}</div>
+      ${r.status==='open'?`<div class="muted" style="font-size:12.5px;margin-top:6px">осталось <b class="num" style="color:var(--warn)">${ruDays(r.end)} дн.</b></div>`:''}</div>`}).join('')}
+  </div>`:''}
+  ${p.about?`<div class="section-title" style="margin-bottom:12px">О программе</div><div class="panel muted" style="padding:20px;font-size:14.5px;line-height:1.55;margin-bottom:28px">${esc(p.about)}</div>`:''}
+  <div class="section-title" style="margin-bottom:12px">Кто может получить</div>
+  <div class="panel" style="padding:20px;margin-bottom:28px">
+    <div class="row" style="margin-bottom:12px;flex-wrap:wrap">${(p.recip||[]).map(r=>`<span class="chip c-info">${RECIP[r]||r}</span>`).join('')}</div>
+    ${(p.who||[]).map(w=>`<div style="font-size:14px;padding:5px 0;color:var(--muted)">✓&nbsp; ${esc(w)}</div>`).join('')}
+  </div>
+  <div class="section-title" style="margin-bottom:12px">Условия участия</div>
+  <div class="panel" style="padding:20px;margin-bottom:28px">
+    ${(p.conds||[]).map((c,i)=>`<div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px"><span class="num" style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-text);display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex:none;font-size:12px">${i+1}</span><span>${esc(c)}</span></div>`).join('')}
+  </div>
+  ${p.slug==='grant-razvitie-fermerskogo-hozyaystva'&&D.flagTiers?`<div class="section-title" style="margin-bottom:12px">Сколько можно получить</div>
+  <div class="panel" style="margin-bottom:28px;overflow-x:auto"><table class="tiers" style="min-width:520px">
+    <tr><th>Вариант гранта</th><th>Собственные средства</th><th>Условия</th></tr>
+    ${D.flagTiers.map(t=>`<tr><td class="num" style="font-weight:700">${(t.amount/1e6).toString().replace('.',',')} млн ₽</td><td class="num">от ${t.ownFundsPct}%</td><td class="muted">${esc(t.note)}</td></tr>`).join('')}
+  </table></div>`:''}
+  ${docs.length?`<div class="section-title" style="margin-bottom:12px">Чек-лист документов · <span class="num" style="color:var(--primary)">${done}/${docs.length}</span></div>
+  <div class="panel" style="padding:20px;margin-bottom:28px">
+    <div class="progress" style="margin-bottom:6px"><div style="width:${docs.length?Math.round(done/docs.length*100):0}%;background:var(--ok)"></div></div>
+    <div class="muted" style="font-size:12.5px;margin-bottom:12px">Отмечайте готовые документы — прогресс сохранится на этой странице.</div>
+    ${docs.map((d,i)=>`<label style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:14px;cursor:pointer;border-bottom:1px solid var(--border)">
+      <input type="checkbox" ${S.docs[slug+':'+i]?'checked':''} onchange="S.docs['${slug}:'+${i}]=this.checked;refresh()" style="margin-top:3px;accent-color:var(--primary)">
+      <span><b>${esc(d.name)}</b>${d.why?`<div class="muted" style="font-size:12.5px">${esc(d.why)}</div>`:''}</span></label>`).join('')}
+  </div>`:''}
+  ${p.steps&&p.steps.length?`<div class="section-title" style="margin-bottom:12px">Как получить: пошаговая инструкция</div>
+  <div class="panel" style="padding:20px;margin-bottom:28px">
+    ${p.steps.map((t,i)=>`<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span class="num" style="width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex:none">${i+1}</span><span>${esc(t)}</span></div>`).join('')}
+  </div>`:''}
+  <div class="section-title" style="margin-bottom:12px">Официальные источники</div>
+  <div class="panel" style="padding:20px;margin-bottom:28px">
+    ${(p.links||[]).map(l=>`<a href="${l[1]}" target="_blank" rel="noopener" style="display:block;padding:8px 0;font-size:14px;color:var(--accent-text);border-bottom:1px solid var(--border)">${esc(l[0])} ↗</a>`).join('')}
+    <div class="muted" style="font-size:12.5px;margin-top:12px">Юридически значимые сведения всегда проверяйте на официальных ресурсах — ссылки бесплатны и не блокируются.</div>
+  </div>
+  ${p.changes&&p.changes.length?`<div class="section-title" style="margin-bottom:12px">История изменений</div>
+  <div class="panel" style="padding:20px;margin-bottom:28px">
+    ${p.changes.map(c=>`<div style="display:flex;gap:14px;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px"><span class="muted num" style="font-size:12.5px;flex:none;width:110px">${esc(c[0])}</span><span>${esc(c[1])}</span></div>`).join('')}
+  </div>`:''}
+  ${similar.length?`<div class="section-title" style="margin-bottom:12px">Похожие программы</div>
+  <div class="prog-grid" style="margin-bottom:20px">${similar.map(card).join('')}</div>`:''}
+  <div class="notice">Это демонстрационное наполнение MVP. Подбор и инструкции носят информационный характер и не гарантируют одобрение заявки — решение принимает комиссия организатора.</div>`;
+}
+
+function vCalendar(){
+  const off=(new Date(2026,10,1).getDay()+6)%7, days=30, byDay={};
+  D.events.forEach(e=>{const d=+e.d.split('-')[2];(byDay[d]=byDay[d]||[]).push(e)});
+  let cells='';for(let i=0;i<off;i++)cells+='<div></div>';
+  for(let d=1;d<=days;d++){const evs=byDay[d]||[];const wd=(off+d-1)%7;
+    cells+=`<div class="cd ${wd>=5?'we':''} ${S.day===d?'sel':''}" onclick="S.day=${d};refresh()">
+      <span class="daynum num ${d===5?'today':''}">${d}</span>
+      ${evs.slice(0,2).map(e=>`<span class="ev ${EV[e.type].c}">${esc(e.t)}</span>`).join('')}
+      ${evs.length>2?`<span class="ev muted">ещё ${evs.length-2}</span>`:''}</div>`;}
+  const dayEvs=S.day?(byDay[S.day]||[]):[];
+  const open=[];D.programs.forEach(p=>p.rounds.forEach(r=>{if(r.status==='open'&&r.end)open.push({p,r})}));
+  open.sort((a,b)=>a.r.end<b.r.end?-1:1);
+  return `
+  <div class="section-title" style="font-size:28px;margin-bottom:6px">Агрокалендарь</div>
+  <div class="muted" style="font-size:14px;margin-bottom:16px">Дедлайны подачи заявок на субсидии и гранты, окна отборов, выставки, форумы и консультации.</div>
+  <div class="row" style="margin-bottom:20px;gap:14px">
+    ${['deadline','round-open','round-close','subsidy-window','exhibition','webinar'].map(t=>`<span class="chip ${EV[t].c}"><span class="dot"></span>${EV[t].l}</span>`).join('')}
+  </div>
+  <div class="hgrid" style="grid-template-columns:1.5fr 1fr">
+    <div class="panel" style="padding:18px">
+      <div class="cal-head"><div><div style="font-weight:800;font-size:18px;letter-spacing:-.01em">Ноябрь 2026</div><div class="muted" style="font-size:12.5px">событий в месяце: ${D.events.length}</div></div><div class="row" style="gap:6px"><span class="chip c-ok num">открытий: ${D.events.filter(e=>e.type==='round-open').length}</span><span class="chip c-warn num">дедлайнов: ${D.events.filter(e=>e.type==='deadline'||e.type==='round-close').length}</span></div></div>
+      <div class="cal-grid muted" style="font-size:11px;margin-bottom:4px">${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<div style="text-align:center">${d}</div>`).join('')}</div>
+      <div class="cal-grid">${cells}</div>
+      ${S.day?`<div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
+        <div style="font-weight:700;margin-bottom:8px">${S.day} ноября · событий: ${dayEvs.length}</div>
+        ${dayEvs.map(e=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--border);${e.slug?'cursor:pointer':''}" ${e.slug?`onclick="location.hash='#/program/${e.slug}'"`:''}>
+          <span class="chip ${EV[e.type].c}" style="flex-shrink:0">${EV[e.type].l}</span>
+          <span><b style="font-size:14px">${esc(e.t)}</b><div class="muted" style="font-size:12.5px">${esc(e.loc||rname(e.region)||'')}${e.desc?' · '+esc(e.desc):''}</div>${e.slug?'<div style="font-size:12px;color:var(--accent-text);font-weight:600;margin-top:2px">Открыть программу →</div>':''}</span></div>`).join('')||'<div class="muted" style="font-size:14px">В этот день событий нет</div>'}
+      </div>`:''}
+    </div>
+    <div>
+      <div class="section-title" style="font-size:17px;margin-bottom:12px">Какие субсидии можно получить сейчас</div>
+      <div style="display:grid;gap:10px">
+        ${open.slice(0,6).map(({p,r})=>{const d=ruDays(r.end);return `<div class="card" style="padding:14px 16px" onclick="location.hash='#/program/${p.slug}'">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+            <div style="font-size:14px;font-weight:600;min-width:0">${esc(p.title)}</div>
+            <span class="chip num ${d<=14?'c-warn':'c-ok'}" style="flex-shrink:0">${d} дн.</span></div>
+          <div class="muted" style="font-size:12.5px;margin-top:6px">${rname(r.region)||'Вся Россия'} · приём до ${r.end}</div></div>`}).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+const OPF=[['kfh','КФХ (крестьянское фермерское хозяйство)'],['ip','ИП'],['ooo','ООО'],['lph','ЛПХ (личное подсобное хозяйство)'],['coop','Сельхозкооператив']];
+function wRender(){
+  const w=S.w;
+  const steps=['Регион','Форма хозяйства','Стадия','Результат'];
+  let inner='';
+  if(w.step===0){
+    inner=`<div style="font-weight:700;font-size:17px;margin-bottom:14px">В каком регионе работает хозяйство?</div>
+      <select class="t" style="max-width:340px" id="wreg"><option value="">Выберите регион</option>
+      ${Object.entries(D.regions).map(([c,n])=>`<option value="${c}" ${w.region===c?'selected':''}>${n}</option>`).join('')}</select>`;
+  }else if(w.step===1){
+    inner=`<div style="font-weight:700;font-size:17px;margin-bottom:14px">Форма вашего хозяйства</div>
+      <div style="display:grid;gap:8px;max-width:460px">${OPF.map(([v,n])=>`<label class="opt ${w.opf===v?'sel':''}"><input type="radio" name="opf" ${w.opf===v?'checked':''} onchange="S.w.opf='${v}';refresh()"> ${n}</label>`).join('')}</div>`;
+  }else if(w.step===2){
+    inner=`<div style="font-weight:700;font-size:17px;margin-bottom:14px">Хозяйство уже работает?</div>
+      <div style="display:grid;gap:8px;max-width:460px">
+        <label class="opt ${w.stage==='working'?'sel':''}"><input type="radio" name="st" ${w.stage==='working'?'checked':''} onchange="S.w.stage='working';refresh()"> Уже работает</label>
+        <label class="opt ${w.stage==='plan'?'sel':''}"><input type="radio" name="st" ${w.stage==='plan'?'checked':''} onchange="S.w.stage='plan';refresh()"> Только планирую открыть</label>
+      </div>`;
+  }else{
+    const R=evaluate();
+    const group=(t,cls,arr)=>arr.length?`<div style="font-weight:700;font-size:16px;margin:20px 0 10px">${t} · ${arr.length}</div>
+      <div style="display:grid;gap:10px">${arr.map(({p,why})=>`<div class="verdict ${cls}">
+        <div style="font-weight:700;font-size:15px"><a href="#/program/${p.slug}" style="text-decoration:underline">${esc(p.title)}</a></div>
+        <div class="muted" style="font-size:12.5px;margin:2px 0 8px">${tname(p.type)} · ${esc(p.amount)}</div>
+        <div style="font-size:13px">● ${why}</div></div>`).join('')}</div>`:'';
+    inner=`<div class="notice" style="margin-bottom:8px">Подбор — предварительная автоматическая оценка, а не гарантия одобрения. Окончательное решение принимает государственная комиссия по документам.</div>
+      <div class="muted" style="font-size:13px;margin-top:10px">По анкете: ${rname(w.region)||'регион не выбран'} · ${OPF.find(o=>o[0]===w.opf)?.[1]||'форма не выбрана'}</div>
+      ${group('Потенциально подходит','v-match',R.match)}
+      ${group('Нужно уточнить','v-clarify',R.clarify)}
+      ${group('Подходящих примеров отборов нет','v-noround',R.noround)}
+      ${group('Не подходит','v-mismatch',R.mismatch)}`;
+  }
+  const pct=Math.round((Math.min(w.step,3)+1)/4*100);
+  const canNext=(w.step===0&&w.region)||(w.step===1&&w.opf)||(w.step===2&&w.stage);
+  return `
+  <div class="section-title" style="font-size:28px;margin-bottom:6px">Подбор для моего хозяйства</div>
+  <div class="muted" style="font-size:14px;margin-bottom:20px">Короткая анкета. Не все вопросы обязательны — мастер пропускает нерелевантные шаги.</div>
+  <div style="max-width:760px">
+    <div class="row" style="justify-content:space-between;margin-bottom:6px"><span style="font-weight:600;font-size:13px">Шаг ${Math.min(w.step,3)+1} из 4 · ${steps[Math.min(w.step,3)]}</span><span class="num muted" style="font-size:13px">${pct}%</span></div>
+    <div class="progress" style="margin-bottom:20px"><div style="width:${pct}%"></div></div>
+    <div class="panel" style="padding:28px">${inner}
+      <div class="row" style="justify-content:space-between;margin-top:24px">
+        <button class="btn ghost" ${w.step===0?'disabled':''} onclick="S.w.step=Math.max(0,S.w.step-1);refresh()">← Назад</button>
+        ${w.step<3?`<button class="btn" ${w.step===3||w.step===0||canNext?'':'disabled'} onclick="if(${w.step}===0){S.w.region=document.getElementById('wreg').value;if(!S.w.region)return;}S.w.step++;refresh()">Далее →</button>`
+        :`<button class="btn ghost" onclick="S.w={step:0,region:'',opf:'',stage:'',goal:''};refresh()">Пройти заново</button>`}
+      </div>
+    </div>
+  </div>`;
+}
+function evaluate(){
+  const {region,opf,stage}=S.w;const R={match:[],clarify:[],noround:[],mismatch:[]};
+  D.programs.filter(p=>!p.hist).forEach(p=>{
+    const rec=p.recip||[];
+    const ok=rec.includes(opf)||((opf==='kfh')&&(rec.includes('kfh')||rec.includes('ip-kfh')));
+    if(!ok){
+      if(rec.includes('other')||rec.includes('individual')){R.clarify.push({p,why:'Ваша форма не указана прямо — требуется уточнение условий в источнике'});}
+      else R.mismatch.push({p,why:'Ваша форма хозяйства не входит в перечень получателей'});
+      return;}
+    if(p.level==='regional'&&p.region&&p.region!==region){R.mismatch.push({p,why:'Программа действует в другом регионе'});return;}
+    if(stage==='plan'&&/Агропрогресс/.test(p.title)){R.mismatch.push({p,why:'Грант только для действующих хозяйств'});return;}
+    const or=p.rounds.find(r=>r.status==='open'&&(p.level==='federal'||!r.region||r.region===region));
+    if(or)R.match.push({p,why:'Критерии совпадают; отбор открыт до '+(or.end||'…')});
+    else R.noround.push({p,why:'Программа соответствует профилю, но открытого отбора сейчас нет'});
+  });
+  return R;
+}
+
+function vTarify(){
+  return `
+  <div class="section-title" style="font-size:28px;text-align:center;margin-bottom:6px">Тарифы</div>
+  <div class="muted" style="font-size:14px;text-align:center;margin-bottom:28px">Базовый каталог бесплатен навсегда. Подписка открывает детальные карточки, персональный подбор, чек-листы и уведомления.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:760px;margin:0 auto">
+    <div class="panel" style="padding:28px">
+      <div class="lbl">Бесплатно</div>
+      <div class="num" style="font-size:34px;font-weight:800;margin:6px 0 4px">0 ₽</div>
+      <div class="muted" style="font-size:13px;margin-bottom:16px">для знакомства с каталогом</div>
+      ${['Главная страница и поиск','Категории и региональные разделы','Краткие карточки программ','Статус и регион меры поддержки','Официальные источники','Агрокалендарь: обзор событий'].map(f=>`<div style="font-size:14px;padding:5px 0;color:var(--muted)">✓&nbsp; ${f}</div>`).join('')}
+      <a class="btn ghost" style="width:100%;justify-content:center;margin-top:18px" href="#/catalog">Открыть каталог</a>
+    </div>
+    <div class="panel" style="padding:28px;border-color:var(--primary);box-shadow:0 4px 20px rgba(21,131,216,.1);position:relative">
+      <span class="chip c-info" style="position:absolute;top:-11px;left:24px">Полный доступ</span>
+      <div class="row" style="align-items:baseline;gap:14px"><span><span class="num" style="font-size:34px;font-weight:800">790 ₽</span><span class="muted" style="font-size:13px"> / мес</span></span>
+      <span><span class="num" style="font-size:20px;font-weight:700">6 990 ₽</span><span class="muted" style="font-size:13px"> / год</span> <span class="chip c-ok" style="font-size:11px">−26%</span></span></div>
+      ${['Полные детальные карточки программ','Персональный подбор под хозяйство','Чек-листы документов с прогрессом','Пошаговые инструкции получения','Избранное и отслеживание изменений','Персональные уведомления о новых субсидиях и дедлайнах','История изменений программ'].map(f=>`<div style="font-size:14px;padding:5px 0">✓&nbsp; ${f}</div>`).join('')}
+      <button class="btn" style="width:100%;justify-content:center;margin-top:18px" onclick="alert('Онлайн-оплата подключается. В полной версии эта кнопка регистрирует заявку — деньги не списываются, успешная оплата не имитируется. Активацию выполняет администратор.')">Оформить подписку</button>
+    </div>
+  </div>
+  <div class="notice" style="max-width:760px;margin:24px auto 0">Мы не блокируем ссылки на официальные государственные ресурсы — они доступны бесплатно в каждой карточке. Подписка оплачивает структурирование, персональный подбор и отслеживание изменений.</div>`;
+}
+
+function vLogin(){
+  if(S.user){location.hash='#/account';return '';}
+  const m=S.lmode;
+  const tab=(k,n)=>`<button class="btn sm ${m===k||(m==='reg2'&&k==='reg')?'':'ghost'}" style="flex:1" onclick="S.lmode='${k}';refresh()">${n}</button>`;
+  if(m==='reg2'){
+    return `
+    <div style="max-width:440px;margin:32px auto">
+      <div class="panel" style="padding:32px">
+        <div style="font-weight:800;font-size:22px;margin-bottom:6px">Подтверждение почты</div>
+        <div class="muted" style="font-size:14px;margin-bottom:16px">Мы отправили 6-значный код на <b>${esc(S.regmail)}</b>. Введите его, чтобы завершить регистрацию.</div>
+        <div class="notice" style="margin-bottom:16px">Демо-режим: письмо не отправляется, почтовый сервис подключается при запуске. Код для проверки: <b class="num">${S.regcode}</b>. В боевой версии код действует 15 минут, после 5 неверных попыток — блокировка на час.</div>
+        <input class="t num" id="reg-code" placeholder="••••••" maxlength="6" style="text-align:center;font-size:22px;letter-spacing:8px;margin-bottom:14px">
+        <button class="btn big" style="width:100%;justify-content:center" onclick="regVerify()">Подтвердить и войти</button>
+        <div style="text-align:center;margin-top:14px;font-size:13px"><a href="#/login" onclick="S.lmode='reg'" style="color:var(--accent-text);font-weight:600">← Изменить e-mail</a></div>
+        <div class="muted" id="reg-err" style="font-size:13px;color:var(--danger);margin-top:10px;text-align:center"></div>
+      </div>
+    </div>`;
+  }
+  return `
+  <div style="max-width:440px;margin:32px auto">
+    <div class="panel" style="padding:32px">
+      <div class="row" style="margin-bottom:22px;gap:6px">${tab('login','Вход')}${tab('reg','Регистрация')}</div>
+      ${m==='login'?`
+      <div style="font-weight:800;font-size:22px;margin-bottom:6px">Вход в личный кабинет</div>
+      <div class="muted" style="font-size:14px;margin-bottom:20px">В боевой версии — вход через аккаунт Kimi (OAuth) или по почте и паролю. Здесь — демо-вход одной кнопкой.</div>
+      <button class="btn big" style="width:100%;justify-content:center" onclick="S.user={name:'Иван Петров',email:'ivan@example.ru',demo:true};location.hash='#/account';refresh()">Войти через Kimi (демо)</button>
+      <div class="muted" style="font-size:12.5px;margin-top:14px;text-align:center;line-height:1.5">Нажимая, вы принимаете условия сервиса и политику обработки персональных данных</div>
+      `:`
+      <div style="font-weight:800;font-size:22px;margin-bottom:6px">Регистрация</div>
+      <div class="muted" style="font-size:14px;margin-bottom:20px">Почта и пароль, подтверждение кодом из письма. Пароль хранится только в виде хэша.</div>
+      <div style="display:grid;gap:12px">
+        <div><label class="f-label">Имя</label><input class="t" id="reg-name" placeholder="Иван Петров"></div>
+        <div><label class="f-label">E-mail</label><input class="t" id="reg-mail" type="email" placeholder="you@example.ru"></div>
+        <div><label class="f-label">Пароль (минимум 8 символов)</label><input class="t" id="reg-pass" type="password" placeholder="••••••••"></div>
+        <button class="btn big" style="width:100%;justify-content:center" onclick="regStart()">Получить код на почту</button>
+        <div class="muted" id="reg-err" style="font-size:13px;color:var(--danger);text-align:center"></div>
+      </div>`}
+    </div>
+    <div class="muted" style="font-size:13px;text-align:center;margin-top:14px">${m==='login'?'Нет аккаунта? Перейдите на вкладку «Регистрация».':'Уже есть аккаунт? Вкладка «Вход».'}</div>
+  </div>`;
+}
+function regStart(){
+  const err=document.getElementById('reg-err');
+  const name=gv('reg-name'),mail=gv('reg-mail'),pass=gv('reg-pass');
+  if(!name){err.textContent='Укажите имя';return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)){err.textContent='Проверьте e-mail — на него придёт код';return}
+  if(pass.length<8){err.textContent='Пароль короче 8 символов';return}
+  S.regname=name;S.regmail=mail;S.regcode=String(100000+Math.floor(Math.random()*900000));S.lmode='reg2';refresh();
+}
+function regVerify(){
+  const err=document.getElementById('reg-err');
+  if(gv('reg-code')!==S.regcode){err.textContent='Код не совпадает — проверьте цифры';return}
+  S.user={name:S.regname,email:S.regmail,demo:true};S.lmode='login';location.hash='#/account';refresh();
+}
+function vAccount(){
+  if(!S.user)return `<div class="panel" style="padding:40px;text-align:center;max-width:460px;margin:32px auto"><div style="font-weight:700;font-size:18px;margin-bottom:8px">Нужен вход</div><div class="muted" style="font-size:14px;margin-bottom:18px">Личный кабинет доступен после авторизации.</div><a class="btn" href="#/login">Войти</a></div>`;
+  const t=S.atab;
+  const favProgs=D.programs.filter(p=>S.fav.includes(p.slug));
+  let body='';
+  if(t==='obzor'){
+    body=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+      <div class="panel" style="padding:20px">
+        <div class="lbl">Подписка</div>
+        <div style="font-weight:800;font-size:20px;margin:6px 0 4px">Нет активной подписки</div>
+        <div class="muted" style="font-size:13px;margin-bottom:14px">Базовый каталог доступен бесплатно.</div>
+        <a class="btn" href="#/tarify">Оформить подписку</a>
+      </div>
+      <div class="panel" style="padding:20px">
+        <div class="lbl">Мой подбор</div>
+        <div class="muted" style="font-size:14px;margin:6px 0 14px">${S.w.region||S.w.opf?`Анкета: ${rname(S.w.region)||'регион не выбран'} · ${OPF.find(o=>o[0]===S.w.opf)?.[1]||'форма не выбрана'}`:'Анкета ещё не заполнена.'}</div>
+        <a class="btn ghost" href="#/podbor">${S.w.region?'Продолжить подбор':'Пройти подбор'}</a>
+      </div>
+      <div class="panel" style="padding:20px">
+        <div class="lbl">Избранное</div>
+        <div style="font-weight:800;font-size:20px;margin:6px 0 4px" class="num">${favProgs.length}</div>
+        <div class="muted" style="font-size:13px;margin-bottom:14px">${favProgs.length===1?'программа отслеживается':'программ отслеживается'}</div>
+        <a class="btn ghost" onclick="S.atab='fav';refresh()">Открыть</a>
+      </div>
+    </div>`;
+  }else if(t==='fav'){
+    body=favProgs.length?`<div class="prog-grid">${favProgs.map(card).join('')}</div>
+      <div class="muted" style="font-size:13px;margin-top:14px">При изменении условий этих программ вы получите уведомление.</div>`
+      :`<div class="panel" style="padding:40px;text-align:center"><div style="font-weight:700;font-size:16px;margin-bottom:8px">В избранном пусто</div><div class="muted" style="font-size:14px;margin-bottom:18px">Нажмите ♡ на карточке программы, чтобы отслеживать её изменения.</div><a class="btn" href="#/catalog">Перейти в каталог</a></div>`;
+  }else if(t==='notif'){
+    body=`<div style="display:grid;gap:10px">${NOTIFS.map(n=>`<a class="panel" style="padding:16px 20px;display:flex;gap:16px;align-items:baseline" href="#/program/${n[2]}">
+      <span class="muted num" style="font-size:12.5px;flex:none;width:90px">${n[0]}</span><span style="font-size:14px">${esc(n[1])}</span></a>`).join('')}</div>
+      <div class="muted" style="font-size:12.5px;margin-top:12px">Демонстрационные уведомления. В боевой версии приходят на e-mail и в кабинет.</div>`;
+  }else{
+    body=`<div class="panel" style="padding:24px;max-width:560px">
+      <div style="font-weight:700;font-size:16px;margin-bottom:16px">Профиль</div>
+      <div style="display:grid;gap:14px">
+        <div><span class="lbl">Имя</span><input class="t" style="width:100%;margin-top:4px" value="${esc(S.user.name)}" onchange="S.user.name=this.value"></div>
+        <div><span class="lbl">E-mail для уведомлений</span><input class="t" style="width:100%;margin-top:4px" value="${esc(S.user.email)}" onchange="S.user.email=this.value"></div>
+        <div><span class="lbl">Регион хозяйства</span><select class="t" style="width:100%;margin-top:4px" onchange="S.w.region=this.value"><option value="">Не выбран</option>${Object.entries(D.regions).map(([c,n])=>`<option value="${c}" ${S.w.region===c?'selected':''}>${n}</option>`).join('')}</select></div>
+      </div>
+      <div class="row" style="margin-top:20px;justify-content:space-between">
+        <button class="btn" onclick="refresh();alert('Сохранено (демо)')">Сохранить</button>
+        <button class="btn ghost" onclick="S.user=null;location.hash='#/';refresh()">Выйти</button>
+      </div>
+    </div>`;
+  }
+  const tab=(k,n)=>`<button class="btn ${t===k?'':'ghost'}" onclick="S.atab='${k}';refresh()">${n}</button>`;
+  return `
+  <div class="row" style="justify-content:space-between;margin-bottom:4px;flex-wrap:wrap">
+    <div><div class="section-title" style="font-size:28px">Здравствуйте, ${esc(S.user.name.split(' ')[0])}!</div>
+    <div class="muted" style="font-size:13px">${esc(S.user.email)} · <span class="badge-demo">демо-вход</span></div></div>
+  </div>
+  <div class="row" style="margin:18px 0 22px;flex-wrap:wrap">${tab('obzor','Обзор')}${tab('fav','Избранное'+(favProgs.length?` (${favProgs.length})`:''))}${tab('notif','Уведомления')}${tab('set','Настройки')}</div>
+  ${body}`;
+}
+function vAdmin(){
+  const t=S.adtab;
+  const tab=(k,n)=>`<button class="btn ${t===k?'':'ghost'}" onclick="S.adtab='${k}';refresh()">${n}</button>`;
+  let body='';
+  if(t==='programs'){
+    body=`<div class="panel" style="overflow-x:auto;padding:0"><table class="tiers" style="min-width:760px">
+      <tr><th>Программа</th><th>Тип</th><th>Регион</th><th>Статус</th><th>Проверено</th><th></th></tr>
+      ${D.programs.map(p=>`<tr><td style="font-weight:600">${esc(p.title)}</td><td class="muted">${tname(p.type)}</td><td>${rname(p.region)}</td><td><span class="chip ${ST[p.status].c}"><span class="dot"></span>${ST[p.status].l}</span></td><td class="muted num">${p.verified||'—'}</td>
+      <td><a href="#/program/${p.slug}" style="color:var(--accent-text);font-size:13px">Открыть</a></td></tr>`).join('')}</table></div>
+      <div class="muted" style="font-size:12.5px;margin-top:12px">В боевой версии здесь же — создание и ручное редактирование программ, публикация и снятие с публикации.</div>`;
+  }else if(t==='mod'){
+    const list=MODERATION.filter((_,i)=>S.mod.includes(i));
+    body=list.length?`<div style="display:grid;gap:12px">${list.map(m=>{const idx=MODERATION.indexOf(m);return `<div class="panel" style="padding:20px">
+      <div class="row" style="margin-bottom:10px"><b style="font-size:15px">${esc(m.prog)}</b><span class="chip ${m.st==='robot'?'c-info':'c-gray'}">${m.st==='robot'?'изменил робот':'ручная правка'}</span><span class="muted" style="font-size:12px">источник: ${esc(m.src)}</span></div>
+      <div class="muted" style="font-size:12.5px;margin-bottom:8px">Поле: ${esc(m.field)}</div>
+      <div style="display:grid;grid-template-columns:1fr 28px 1fr;gap:10px;align-items:center;max-width:640px">
+        <div style="background:#fdf2f2;border:1px solid #f3d1d1;border-radius:8px;padding:10px 12px;font-size:13.5px"><span class="lbl" style="color:#b42318">Было</span><div>${esc(m.before)}</div></div>
+        <div style="text-align:center;color:var(--muted)">→</div>
+        <div style="background:#f0f9f1;border:1px solid #cdeed3;border-radius:8px;padding:10px 12px;font-size:13.5px"><span class="lbl" style="color:#067647">Стало</span><div>${esc(m.after)}</div></div>
+      </div>
+      <div class="row" style="margin-top:14px"><button class="btn" onclick="S.mod=S.mod.filter(x=>x!==${idx});refresh()">Подтвердить</button><button class="btn ghost" onclick="S.mod=S.mod.filter(x=>x!==${idx});refresh()">Отклонить</button></div>
+    </div>`}).join('')}</div>`
+    :`<div class="panel" style="padding:40px;text-align:center"><b>Очередь модерации пуста</b><div class="muted" style="font-size:13px;margin-top:6px">Все изменения проверены.</div></div>`;
+  }else if(t==='src'){
+    body=`<div style="display:grid;gap:10px">${SOURCES.map(sc=>`<div class="panel" style="padding:16px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <span class="chip ${sc[2]==='ok'?'c-ok':sc[2]==='err'?'c-warn':'c-gray'}"><span class="dot"></span>${sc[2]==='ok'?'работает':sc[2]==='err'?'ошибка':'ожидает'}</span>
+      <span style="font-weight:600;font-size:14px">${esc(sc[0])}</span><span class="muted num" style="font-size:12.5px">${esc(sc[1])}</span>
+      <span class="muted" style="font-size:12.5px;margin-left:auto">${esc(sc[3])}</span></div>`).join('')}</div>
+    <div class="row" style="margin-top:16px"><button class="btn" onclick="alert('В демо-файле сбор не запускается. В боевой версии сбор выполняется на сервере по расписанию и вручную; робот не обходит капчи, авторизацию и не выдумывает отсутствующие данные.')">Запустить сбор сейчас</button></div>`;
+  }else if(t==='edit'){
+    const p=D.programs.find(x=>x.slug===S.adprog)||D.programs[0];S.adprog=p.slug;
+    body=`
+    <div class="hgrid" style="grid-template-columns:minmax(0,300px) minmax(0,1fr);align-items:start">
+      <div class="panel" style="padding:8px;max-height:72vh;overflow:auto">
+        ${D.programs.map(x=>`<div onclick="S.adprog='${x.slug}';refresh()" style="padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13.5px;line-height:1.35;${x.slug===p.slug?'background:var(--accent);color:var(--accent-text);font-weight:600':''}">${esc(x.title)}</div>`).join('')}
+      </div>
+      <div class="panel" style="padding:24px;display:grid;gap:13px">
+        <div class="row" style="justify-content:space-between"><b style="font-size:16px">Редактор карточки</b><span class="badge-demo">демо: правки хранятся локально</span></div>
+        <div><label class="f-label">Название программы</label><input class="t" id="ep-title" value="${esc(p.title)}"></div>
+        <div><label class="f-label">Короткое описание (в каталоге)</label><textarea class="t" id="ep-short" style="min-height:60px">${esc(p.short)}</textarea></div>
+        <div class="row" style="align-items:flex-end">
+          <div style="flex:1;min-width:200px"><label class="f-label">Сумма</label><input class="t" id="ep-amount" value="${esc(p.amount)}"></div>
+          <div style="flex:1;min-width:200px"><label class="f-label">Дедлайн (текст)</label><input class="t" id="ep-deadline" value="${esc(p.deadline||'')}"></div>
+        </div>
+        <div><label class="f-label">О программе</label><textarea class="t" id="ep-about" style="min-height:96px">${esc(p.about||'')}</textarea></div>
+        <div><label class="f-label">Кому подходит (каждый пункт — новая строка)</label><textarea class="t" id="ep-who">${esc((p.who||[]).join('\n'))}</textarea></div>
+        <div><label class="f-label">Условия (каждый пункт — новая строка)</label><textarea class="t" id="ep-conds">${esc((p.conds||[]).join('\n'))}</textarea></div>
+        <div><label class="f-label">Шаги подачи (каждый шаг — новая строка)</label><textarea class="t" id="ep-steps" style="min-height:110px">${esc((p.steps||[]).join('\n'))}</textarea></div>
+        <div><label class="f-label">Документы (строка: Название :: зачем нужен)</label><textarea class="t" id="ep-docs" style="min-height:130px">${esc((p.docs||[]).map(d=>d.name+' :: '+d.why).join('\n'))}</textarea></div>
+        <div class="row"><button class="btn" onclick="saveProg('${p.slug}')">Сохранить изменения</button><button class="btn ghost" onclick="if(confirm('Сбросить все локальные правки к исходным данным?'))resetEdits()">Сбросить все правки</button><span id="ep-note" style="font-size:13px;font-weight:600;color:var(--ok)"></span></div>
+        <div class="notice">Юридически значимые поля (суммы, сроки, условия) в боевой версии требуют ссылки на официальный источник; каждая правка попадает в журнал аудита.</div>
+      </div>
+    </div>`;
+  }else if(t==='templates'){
+    const et=S.edt;
+    body=`
+    <div class="row" style="justify-content:space-between;margin-bottom:14px;gap:12px">
+      <div class="muted" style="font-size:13px;max-width:640px">Шаблоны документов для заявителей: бизнес-планы, заявления, сметы. В боевой версии сюда загружаются файлы (DOCX/XLSX/PDF), здесь — карточки.</div>
+      <button class="btn sm" onclick="S.edt=-1;refresh()">+ Добавить шаблон</button>
+    </div>
+    ${et!==null?templateForm(et<0?null:D.templates[et],et):''}
+    <div style="display:grid;gap:10px">${D.templates.map((tp,i)=>`<div class="panel" style="padding:16px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <span class="chip c-info" style="flex:none">${esc(tp.fmt)}</span>
+      <div style="min-width:0;flex:1"><b style="font-size:14.5px">${esc(tp.name)}</b><div class="muted" style="font-size:12.5px">${esc(tp.desc)}</div></div>
+      <span class="muted num" style="font-size:12px;flex:none">обновлён: ${esc(tp.updated)}</span>
+      <button class="btn ghost sm" onclick="S.edt=${i};refresh()">Править</button>
+      <button class="btn ghost sm" onclick="if(confirm('Удалить шаблон?')){D.templates.splice(${i},1);persistAll();refresh()}">Удалить</button>
+    </div>`).join('')||'<div class="panel" style="padding:32px;text-align:center">Шаблонов нет</div>'}</div>`;
+  }else if(t==='contacts'){
+    const ec=S.edc;
+    body=`
+    <div class="row" style="justify-content:space-between;margin-bottom:14px;gap:12px">
+      <div class="muted" style="font-size:13px;max-width:640px">Контакты показываются на публичной странице «Контакты». Телефоны и адреса публикуйте только из официальных источников.</div>
+      <button class="btn sm" onclick="S.edc=-1;refresh()">+ Добавить контакт</button>
+    </div>
+    ${ec!==null?contactForm(ec<0?null:D.contacts[ec],ec):''}
+    <div style="display:grid;gap:10px">${D.contacts.map((c,i)=>`<div class="panel" style="padding:16px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <span class="chip ${c.kind==='Региональный орган'?'c-ok':'c-info'}" style="flex:none">${esc(c.kind)}</span>
+      <div style="min-width:0;flex:1"><b style="font-size:14.5px">${esc(c.name)}</b><div class="muted" style="font-size:12.5px">${esc(c.site)}${c.phone?' · '+esc(c.phone):''}${c.region?' · '+rname(c.region):''}</div></div>
+      <button class="btn ghost sm" onclick="S.edc=${i};refresh()">Править</button>
+      <button class="btn ghost sm" onclick="if(confirm('Удалить контакт?')){D.contacts.splice(${i},1);persistAll();refresh()}">Удалить</button>
+    </div>`).join('')}</div>`;
+  }else{
+    body=`<div class="panel" style="overflow-x:auto;padding:0"><table class="tiers" style="min-width:680px">
+      <tr><th>Пользователь</th><th>E-mail</th><th>Регион</th><th>Форма</th><th>Тариф</th></tr>
+      ${USERS.map(u=>`<tr><td style="font-weight:600">${esc(u[0])}</td><td class="muted">${esc(u[1])}</td><td>${esc(u[2])}</td><td>${esc(u[3])}</td><td>${u[4]==='Полный доступ'?'<span class="chip c-ok">Полный доступ</span>':'<span class="chip c-gray">Бесплатный</span>'}</td></tr>`).join('')}</table></div>
+      <div class="muted" style="font-size:12.5px;margin-top:12px">Активация подписки после оплаты выполняется здесь вручную, пока не подключён платёжный шлюз.</div>`;
+  }
+  return `
+  <div class="row" style="margin-bottom:4px"><div class="section-title" style="font-size:28px">Админ-панель</div><span class="badge-demo">демо</span></div>
+  <div class="muted" style="font-size:13px;margin-bottom:18px">Управление программами, модерация автоматических изменений и мониторинг сбора данных.</div>
+  <div class="row" style="margin-bottom:22px;flex-wrap:wrap">${tab('programs','Программы')}${tab('edit','Редактор карточек')}${tab('templates','Шаблоны документов')}${tab('contacts','Контакты')}${tab('mod','Модерация'+(S.mod.length?` (${S.mod.length})`:''))}${tab('src','Источники сбора')}${tab('users','Пользователи')}</div>
+  ${body}`;
+}
+function vRegion(code){
+  const name=rname(code);if(!name||name==='Вся Россия')return '<div class="panel" style="padding:32px">Регион не найден</div>';
+  const progs=D.programs.filter(p=>!p.region||p.region===code);
+  const evs=D.events.filter(e=>e.reg===code||e.reg==='');
+  return `
+  <a href="#/catalog" class="muted" style="font-size:14px">← Каталог</a>
+  <div class="section-title" style="font-size:28px;margin:12px 0 6px">Гранты и субсидии: ${name}</div>
+  <div class="muted" style="font-size:14.5px;max-width:760px;margin-bottom:24px">Меры государственной поддержки сельского хозяйства в регионе «${name}»: региональные и федеральные программы, условия, сроки приёма заявок и официальные источники.</div>
+  <div class="row" style="margin-bottom:22px;flex-wrap:wrap">
+    <span class="chip c-ok num">программ: ${progs.length}</span>
+    <span class="chip c-info num">событий в ноябре: ${evs.length}</span>
+    <span class="chip c-gray num">примеров отборов: ${progs.filter(p=>p.status==='open').length}</span>
+  </div>
+  <div class="prog-grid">${progs.map(card).join('')||'<div class="panel" style="padding:32px">По этому региону программ пока нет в демо-наборе.</div>'}</div>`;
+}
+function vFaq(){
+  const QA=[['Откуда берутся данные о программах?','Автоматический сбор с официальных источников: Минсельхоз России, региональные министерства и департаменты АПК, уполномоченные банки. Робот не обходит капчи и авторизацию; каждое автоматическое изменение проходит ручную модерацию «Было → Стало» перед публикацией.'],
+  ['Почему подбор не гарантирует получение денег?','Сервис — информационный. Мы честно показываем формальное соответствие условиям программы, но решение всегда принимает конкурсная комиссия по полному пакету документов. Поэтому вердикты звучат как «потенциально подходит», а не «одобрено».'],
+  ['Что значат статусы программ?','«Приём открыт» — заявки принимаются прямо сейчас, смотрите дедлайн. «Скоро открытие» — программа объявлена, окно приёма ещё не началось. «Приём завершён» — актуальный отбор закрыт, следите за новым окном.'],
+  ['Почему в моём регионе мало программ?','Часть мер федеральные и действуют везде — они показываются для любого региона. Региональные отборы добавляются по мере публикации постановлений. Если вашего региона нет, подпишитесь на него в фильтрах каталога и следите за агрокалендарём.'],
+  ['Чем платная версия отличается от бесплатной?','Бесплатно: поиск, каталог, краткие карточки, календарь и официальные источники. Подписка (790 ₽/мес или 6 990 ₽/год): персональный подбор, чек-листы документов с прогрессом, пошаговые инструкции, избранное и уведомления о дедлайнах. Ссылки на госуслуги и минсельхозы не блокируются никогда.'],
+  ['Как работает оплата?','Платёжный шлюз сейчас подключается. Кнопка «Оформить подписку» не списывает деньги и не имитирует успешную оплату — заявку активирует администратор после подтверждения.'],
+  ['Насколько актуальны суммы и сроки?','У каждой карточки указана дата проверки («Данные проверены»). Перед подачей заявки всегда сверяйте условия в официальном источнике — ссылка есть в каждой карточке.'],
+  ['Это государственный сайт?','Нет. «АгроЯсно» — независимый информационно-аналитический сервис. Мы не оформляем заявки и не являемся госорганом; заявки подаются только через официальные каналы.']];
+  return `
+  <div class="section-title" style="font-size:28px;margin-bottom:6px">Вопросы и ответы</div>
+  <div class="muted" style="font-size:14px;margin-bottom:24px">Как устроен сервис, откуда данные и почему мы ничего не обещаем.</div>
+  <div style="max-width:820px;display:grid;gap:10px">
+    ${QA.map(x=>`<details class="panel" style="padding:0"><summary style="cursor:pointer;font-weight:600;font-size:15px;padding:16px 20px;list-style:none">${esc(x[0])}</summary><div class="muted" style="font-size:14px;line-height:1.55;padding:0 20px 16px">${esc(x[1])}</div></details>`).join('')}
+  </div>
+  <div class="row" style="margin-top:24px"><a class="btn big" href="#/podbor">Пройти подбор</a><a class="btn ghost big" href="#/catalog">Открыть каталог</a></div>`;
+}
+/* ── витрина поставщиков (раздел в разработке) ── */
+function vSuppliers(){
+  return `
+  <div class="dev-banner" style="margin-bottom:26px">
+    <span class="dev-tag"><span class="pulse"></span>В разработке</span>
+    <div style="position:relative;z-index:1;font-size:26px;font-weight:800;margin:14px 0 8px;letter-spacing:-.01em">Витрина поставщиков для фермеров</div>
+    <div style="position:relative;z-index:1;font-size:14.5px;max-width:660px;opacity:.96;line-height:1.55">База производителей и поставщиков по всей России: корма, оборудование, удобрения, техника, семена и расходники. Компании размещают карточки, фермеры находят проверенных поставщиков рядом с хозяйством.</div>
+  </div>
+  <div class="section-title" style="font-size:19px;margin-bottom:12px">Категории витрины</div>
+  <div class="cat-grid" style="margin-bottom:26px">${D.supplierCats.map(c=>`<div class="cat-card" style="cursor:default;min-height:88px"><b style="font-size:14.5px">${esc(c[0])}</b><span class="muted" style="font-size:12.5px;margin-top:3px;line-height:1.4">${esc(c[1])}</span></div>`).join('')}</div>
+  <div class="hgrid">
+    <div class="panel" style="padding:24px">
+      <b style="font-size:16px">Что будет в карточке поставщика</b>
+      <ul class="muted" style="font-size:14px;line-height:1.9;margin-top:10px;padding-left:18px">
+        <li>Каталог продукции с ценами и регионами доставки</li>
+        <li>Реквизиты и проверка компании по ЕГРЮЛ</li>
+        <li>Отзывы фермеров и рейтинг надёжности</li>
+        <li>Метка «работает с грантовыми проектами» — готовит комплект документов для отчётности по гранту</li>
+        <li>Запрос коммерческого предложения прямо с карточки программы</li>
+      </ul>
+    </div>
+    <div class="panel" style="padding:24px">
+      <b style="font-size:16px">Вы поставщик?</b>
+      <p class="muted" style="font-size:14px;margin-top:8px;line-height:1.6">Оставьте заявку — добавим компанию в витрину при запуске раздела и сообщим о старте.</p>
+      <div style="display:grid;gap:10px;margin-top:16px">
+        <input class="t" id="sup-name" placeholder="Название компании">
+        <input class="t" id="sup-mail" type="email" placeholder="E-mail">
+        <input class="t" id="sup-cat" placeholder="Категория (например: корма)">
+        <button class="btn" onclick="supApply()">Подать заявку</button>
+        <div class="muted" style="font-size:12.5px" id="sup-note">Заявки собираются в список ожидания — без спама.</div>
+      </div>
+    </div>
+  </div>`;
+}
+function supApply(){
+  const n=document.getElementById('sup-note');
+  if(!gv('sup-name')||!gv('sup-mail')){n.textContent='Заполните название компании и e-mail';n.style.color='var(--danger)';return}
+  n.textContent='Заявка записана (демо-режим: данные не отправляются на сервер). Сообщим о запуске витрины.';n.style.color='var(--ok)';
+}
+
+/* ── база знаний АПК (раздел в разработке) ── */
+function vKnowledge(){
+  return `
+  <div class="dev-banner green" style="margin-bottom:26px">
+    <span class="dev-tag"><span class="pulse"></span>В разработке</span>
+    <div style="position:relative;z-index:1;font-size:26px;font-weight:800;margin:14px 0 8px;letter-spacing:-.01em">База знаний АПК</div>
+    <div style="position:relative;z-index:1;font-size:14.5px;max-width:660px;opacity:.96;line-height:1.55">Обучение, вебинары, курсы и полезные материалы для фермеров: как получить грант, составить бизнес-план, пройти комиссию и отчитаться без ошибок.</div>
+  </div>
+  <div class="prog-grid">${D.knowledge.map(k=>`<div class="panel" style="padding:22px"><b style="font-size:15.5px">${esc(k.t)}</b><p class="muted" style="font-size:13.5px;margin-top:8px;line-height:1.6">${esc(k.d)}</p></div>`).join('')}</div>
+  <div class="notice" style="margin-top:22px">Публикуем только проверенные материалы со ссылками на нормативные документы. Шаблоны документов уже ведутся в админ-панели (вкладка «Шаблоны документов») и появятся здесь для скачивания.</div>`;
+}
+
+/* ── контакты ведомств и аграрных организаций ── */
+function vContacts(){
+  const kinds=[...new Set(D.contacts.map(c=>c.kind))];
+  const f=S.ckind;
+  const list=D.contacts.filter(c=>!f||c.kind===f);
+  return `
+  <div class="section-title" style="font-size:28px;margin-bottom:6px">Контакты аграрных ведомств и организаций</div>
+  <div class="muted" style="font-size:14px;margin-bottom:18px;max-width:780px">Минсельхозы, уполномоченные банки, фонды и ассоциации — куда обращаться по грантам и субсидиям. Телефоны и адреса показываем только если они подтверждены официальным источником; иначе — переходите на сайт организации.</div>
+  <div class="row" style="margin-bottom:22px">
+    <button class="btn sm ${!f?'':'ghost'}" onclick="S.ckind='';refresh()">Все</button>
+    ${kinds.map(k=>`<button class="btn sm ${f===k?'':'ghost'}" onclick="S.ckind='${k}';refresh()">${esc(k)}</button>`).join('')}
+  </div>
+  <div class="prog-grid">${list.map(c=>`
+    <div class="panel" style="padding:18px 20px;display:flex;flex-direction:column;gap:9px">
+      <div class="row" style="justify-content:space-between;align-items:flex-start;gap:10px"><b style="font-size:15px;line-height:1.3">${esc(c.name)}</b><span class="chip ${c.kind==='Федеральный орган'||c.kind==='Федеральный портал'?'c-info':c.kind==='Региональный орган'?'c-ok':'c-gray'}" style="flex:none">${esc(c.kind)}</span></div>
+      <div class="muted" style="font-size:13px;line-height:1.55">${esc(c.note)}</div>
+      <div style="display:grid;gap:4px;font-size:13.5px;margin-top:auto">
+        ${c.region?`<div class="muted">Регион: ${rname(c.region)}</div>`:''}
+        ${c.phone?`<div>Телефон: <span class="num" style="font-weight:600">${esc(c.phone)}</span></div>`:''}
+        ${c.addr?`<div class="muted">Адрес: ${esc(c.addr)}</div>`:''}
+        <a href="${esc(c.url)}" target="_blank" rel="noopener" style="color:var(--accent-text);font-weight:600;font-size:13.5px">${esc(c.site)} ↗</a>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+/* ── админка: сохранение карточек, формы шаблонов и контактов ── */
+function saveProg(slug){
+  const p=D.programs.find(x=>x.slug===slug);if(!p)return;
+  p.title=gv('ep-title')||p.title;
+  p.short=gv('ep-short');p.amount=gv('ep-amount');p.deadline=gv('ep-deadline');p.about=gv('ep-about');
+  const lines=id=>gv(id).split('\n').map(s=>s.trim()).filter(Boolean);
+  p.who=lines('ep-who');p.conds=lines('ep-conds');p.steps=lines('ep-steps');
+  p.docs=lines('ep-docs').map(l=>{const i=l.indexOf('::');return i<0?{name:l,why:''}:{name:l.slice(0,i).trim(),why:l.slice(i+2).trim()}});
+  persistAll();
+  const n=document.getElementById('ep-note');if(n)n.textContent='Сохранено';
+}
+function templateForm(tp,i){
+  return `<div class="panel" style="padding:22px;display:grid;gap:11px;border-color:var(--primary);margin-bottom:16px">
+    <b>${i<0?'Новый шаблон':'Редактирование шаблона'}</b>
+    <div><label class="f-label">Название</label><input class="t" id="tf-name" value="${esc(tp?.name||'')}" placeholder="Например: Бизнес-план развития КФХ"></div>
+    <div><label class="f-label">Описание</label><textarea class="t" id="tf-desc" style="min-height:60px" placeholder="Что внутри и кому нужно">${esc(tp?.desc||'')}</textarea></div>
+    <div class="row" style="align-items:flex-end">
+      <div style="width:140px"><label class="f-label">Формат</label><input class="t" id="tf-fmt" value="${esc(tp?.fmt||'DOCX')}"></div>
+      <div style="flex:1"><label class="f-label">Дата обновления</label><input class="t" id="tf-upd" value="${esc(tp?.updated||'6 ноября 2026 г.')}"></div>
+    </div>
+    <div class="row"><button class="btn sm" onclick="saveTemplate(${i})">Сохранить</button><button class="btn ghost sm" onclick="S.edt=null;refresh()">Отмена</button></div>
+  </div>`;
+}
+function saveTemplate(i){
+  const name=gv('tf-name');if(!name){alert('Укажите название шаблона');return}
+  const tp={id:i<0?'tpl-'+Date.now():(D.templates[i].id),name,desc:gv('tf-desc'),fmt:gv('tf-fmt')||'DOCX',updated:gv('tf-upd')};
+  if(i<0)D.templates.push(tp);else D.templates[i]=tp;
+  S.edt=null;persistAll();refresh();
+}
+function contactForm(c,i){
+  return `<div class="panel" style="padding:22px;display:grid;gap:11px;border-color:var(--primary);margin-bottom:16px">
+    <b>${i<0?'Новый контакт':'Редактирование контакта'}</b>
+    <div class="row">
+      <div style="flex:2;min-width:220px"><label class="f-label">Название организации</label><input class="t" id="cf-name" value="${esc(c?.name||'')}"></div>
+      <div style="flex:1;min-width:180px"><label class="f-label">Тип</label><input class="t" id="cf-kind" value="${esc(c?.kind||'')}" placeholder="Региональный орган"></div>
+    </div>
+    <div class="row">
+      <div style="flex:1;min-width:180px"><label class="f-label">Домен сайта</label><input class="t" id="cf-site" value="${esc(c?.site||'')}" placeholder="mcx.gov.ru"></div>
+      <div style="flex:2;min-width:220px"><label class="f-label">Ссылка</label><input class="t" id="cf-url" value="${esc(c?.url||'')}" placeholder="https://…"></div>
+    </div>
+    <div class="row">
+      <div style="flex:1;min-width:180px"><label class="f-label">Телефон (только подтверждённый)</label><input class="t" id="cf-phone" value="${esc(c?.phone||'')}"></div>
+      <div style="flex:1;min-width:180px"><label class="f-label">Код региона (например, 23)</label><input class="t" id="cf-region" value="${esc(c?.region||'')}"></div>
+    </div>
+    <div><label class="f-label">Адрес</label><input class="t" id="cf-addr" value="${esc(c?.addr||'')}"></div>
+    <div><label class="f-label">Чем помогает (короткое описание)</label><textarea class="t" id="cf-note" style="min-height:60px">${esc(c?.note||'')}</textarea></div>
+    <div class="row"><button class="btn sm" onclick="saveContact(${i})">Сохранить</button><button class="btn ghost sm" onclick="S.edc=null;refresh()">Отмена</button></div>
+  </div>`;
+}
+function saveContact(i){
+  const name=gv('cf-name');if(!name){alert('Укажите название организации');return}
+  const c={name,kind:gv('cf-kind')||'Организация',site:gv('cf-site'),url:gv('cf-url')||'#',phone:gv('cf-phone')||null,email:null,addr:gv('cf-addr')||null,note:gv('cf-note'),region:gv('cf-region')||null};
+  if(i<0)D.contacts.push(c);else D.contacts[i]=c;
+  S.edc=null;persistAll();refresh();
+}
+function vDocuments(){
+  return `<div class="page-heading"><div class="hero-eyebrow"><span class="eyebrow-line"></span> БИБЛИОТЕКА АПК</div><h1>Документы и шаблоны</h1><p>Собираем формы и образцы, которые помогут подготовиться к грантовым отборам и субсидиям. Пока это демонстрационный список: файлы ещё не опубликованы.</p></div>
+  <div class="notice" style="margin-bottom:20px">Для подачи заявки используйте исключительно формы, утверждённые организатором конкретного отбора. Перечни ниже — примеры будущей библиотеки.</div>
+  <div class="prog-grid">${D.templates.map(d=>`<div class="panel" style="padding:22px"><div class="row" style="justify-content:space-between;margin-bottom:10px"><span class="chip c-info">${esc(d.fmt)}</span><span class="badge-demo">Образец · готовится</span></div><h3 style="font-size:17px;margin-bottom:10px">${esc(d.name)}</h3><p class="muted" style="font-size:13.5px;line-height:1.55">${esc(d.desc)}</p></div>`).join('')}</div>`;
+}
+function render(){
+  const h=location.hash||'#/';
+  const view=document.getElementById('view');
+  let r='home',arg=null;
+  if(h.startsWith('#/catalog')){r='catalog';const m=h.match(/[?&]type=([a-z]+)/);if(m&&!S.ft)S.ft=m[1];}
+  else if(h.startsWith('#/program/')){r='detail';arg=h.split('/')[2];}
+  else if(h.startsWith('#/calendar'))r='calendar';
+  else if(h.startsWith('#/podbor'))r='podbor';
+  else if(h.startsWith('#/tarify'))r='tarify';
+  else if(h.startsWith('#/login'))r='login';
+  else if(h.startsWith('#/account'))r='account';
+  else if(h.startsWith('#/admin'))r='admin';
+  else if(h.startsWith('#/region/')){r='region';arg=h.split('/')[2];}
+  else if(h.startsWith('#/faq'))r='faq';
+  else if(h.startsWith('#/suppliers'))r='suppliers';
+  else if(h.startsWith('#/knowledge'))r='knowledge';
+  else if(h.startsWith('#/contacts'))r='contacts';
+  else if(h.startsWith('#/documents'))r='documents';
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.r===r||(r==='detail'&&a.dataset.r==='catalog')));
+  view.classList.toggle('is-home',r==='home');
+  view.innerHTML={home:vHome,catalog:vCatalog,detail:()=>vDetail(arg),calendar:vCalendar,podbor:wRender,tarify:vTarify,faq:vFaq,login:vLogin,account:vAccount,admin:vAdmin,region:()=>vRegion(arg),suppliers:vSuppliers,knowledge:vKnowledge,contacts:vContacts,documents:vDocuments}[r]();
+
+}
+let _rt;function refresh(){clearTimeout(_rt);_rt=setTimeout(render,120);}
+window.addEventListener('hashchange',()=>{S.ft=location.hash.match(/[?&]type=([a-z]+)/)?.[1]||S.ft;S.cat=location.hash.match(/[?&]cat=([a-z-]+)/)?.[1]||S.cat;render();window.scrollTo(0,0);});
+render();
+</script>
+</body>
+</html>
